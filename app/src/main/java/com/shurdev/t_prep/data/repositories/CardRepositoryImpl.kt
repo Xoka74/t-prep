@@ -16,7 +16,7 @@ class CardRepositoryImpl(
         return cardsApi.getCardById(id.toInt())?.toDomainModel()
     }
 
-    override suspend fun toggleBookmark(questionId: String) {
+    override suspend fun toggleBookmark(cardId: String) {
     }
 
     override suspend fun getBookmarkedCards(): List<Card> {

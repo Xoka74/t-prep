@@ -25,9 +25,9 @@ class ModulesViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                val subjects = getModulesUseCase()
+                val modules = getModulesUseCase()
                 _uiState.value = _uiState.value.copy(
-                    modules = subjects,
+                    modules = modules,
                     isLoading = false
                 )
             } catch (e: Exception) {

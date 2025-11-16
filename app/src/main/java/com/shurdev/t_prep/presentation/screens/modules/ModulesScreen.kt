@@ -42,10 +42,10 @@ fun ModulesScreen(
 
             else -> {
                 LazyColumn(modifier = Modifier.padding(padding)) {
-                    items(state.modules) { subject ->
+                    items(state.modules) { module ->
                         ModuleCard(
-                            module = subject,
-                            onClick = { onModuleClick(subject.id) }
+                            module = module,
+                            onClick = { onModuleClick(module.id) }
                         )
                     }
                 }

@@ -4,7 +4,7 @@ import com.shurdev.t_prep.domain.models.Card
 
 data class QuizState(
     val cards: List<Card> = emptyList(),
-    val currentQuestionIndex: Int = 0,
+    val currentCardIndex: Int = 0,
     val selectedAnswer: Int? = null,
     val isAnswerCorrect: Boolean? = null,
     val score: Int = 0,
@@ -13,9 +13,9 @@ data class QuizState(
     val error: String? = null
 ) {
     val currentCard: Card?
-        get() = cards.getOrNull(currentQuestionIndex)
+        get() = cards.getOrNull(currentCardIndex)
 
     val progress: Float
         get() = if (cards.isEmpty()) 0f
-        else (currentQuestionIndex + 1) / cards.size.toFloat()
+        else (currentCardIndex + 1) / cards.size.toFloat()
 }

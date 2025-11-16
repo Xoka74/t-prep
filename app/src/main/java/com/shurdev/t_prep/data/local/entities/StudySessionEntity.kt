@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 data class StudySessionEntity(
     @PrimaryKey
     val id: String,
-    val subjectId: String,
+    val moduleId: String,
     val date: Long,
     val correctAnswers: Int,
-    val totalQuestions: Int,
+    val totalCards: Int,
     val timeSpentInMinutes: Long
 )

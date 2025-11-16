@@ -1,13 +1,13 @@
 package com.shurdev.t_prep.data.repositories
 
 import com.shurdev.t_prep.data.api.ModulesApi
-import com.shurdev.t_prep.data.local.dao.SubjectDao
+import com.shurdev.t_prep.data.local.dao.ModuleDao
 import com.shurdev.t_prep.data.mappers.toDomainModel
 import com.shurdev.t_prep.domain.models.Module
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
 
 class ModuleRepositoryImpl(
-    private val subjectDao: SubjectDao,
+    private val moduleDao: ModuleDao,
     private val modulesApi: ModulesApi,
 ) : ModuleRepository {
 
@@ -20,9 +20,9 @@ class ModuleRepositoryImpl(
     }
 
     override suspend fun updateModuleProgress(moduleId: String, completed: Int) {
-        val subject = subjectDao.getSubjectById(moduleId)
-        subject?.let {
-            subjectDao.updateSubject(it.copy(completedQuestions = completed))
+        val module = moduleDao.getModuleById(moduleId)
+        module?.let {
+            moduleDao.updateModule(it.copy(completedCards = completed))
         }
     }
 }

@@ -23,14 +23,14 @@ class QuizViewModel @Inject constructor(
     private val _uiState = mutableStateOf(QuizState())
     val uiState: State<QuizState> = _uiState
 
-    fun startQuiz(subjectId: String) {
+    fun startQuiz(moduleId: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                val questions = startQuizUseCase(subjectId)
+                val cards = startQuizUseCase(moduleId)
                 _uiState.value = _uiState.value.copy(
-                    cards = questions,
-                    currentQuestionIndex = 0,
+                    cards = cards,
+                    currentCardIndex = 0,
                     isLoading = false,
                     showResults = false
                 )
@@ -45,9 +45,9 @@ class QuizViewModel @Inject constructor(
 
     fun selectAnswer(selectedIndex: Int) {
         val currentState = _uiState.value
-        val currentQuestion = currentState.cards[currentState.currentQuestionIndex]
+        val currentCard = currentState.cards[currentState.currentCardIndex]
 
-        val isCorrect = selectedIndex == currentQuestion.correctAnswer
+        val isCorrect = selectedIndex == currentCard.correctAnswer
         val updatedScore = if (isCorrect) currentState.score + 1 else currentState.score
 
         _uiState.value = currentState.copy(
@@ -57,11 +57,11 @@ class QuizViewModel @Inject constructor(
         )
     }
 
-    fun nextQuestion() {
+    fun nextCard() {
         val currentState = _uiState.value
-        if (currentState.currentQuestionIndex < currentState.cards.size - 1) {
+        if (currentState.currentCardIndex < currentState.cards.size - 1) {
             _uiState.value = currentState.copy(
-                currentQuestionIndex = currentState.currentQuestionIndex + 1,
+                currentCardIndex = currentState.currentCardIndex + 1,
                 selectedAnswer = null,
                 isAnswerCorrect = null
             )
@@ -72,8 +72,8 @@ class QuizViewModel @Inject constructor(
 
     fun toggleBookmark() {
         viewModelScope.launch {
-            val currentQuestion = _uiState.value.currentCard
-            currentQuestion?.let {
+            val currentCard = _uiState.value.currentCard
+            currentCard?.let {
                 toggleBookmarkUseCase(it.id)
             }
         }
@@ -85,10 +85,10 @@ class QuizViewModel @Inject constructor(
         viewModelScope.launch {
             val session = StudySession(
                 id = UUID.randomUUID().toString(),
-                subjectId = "subject_id",
+                moduleId = "module_id",
                 date = System.currentTimeMillis(),
                 correctAnswers = _uiState.value.score,
-                totalQuestions = _uiState.value.cards.size,
+                totalCards = _uiState.value.cards.size,
                 timeSpentInMinutes = 30
             )
             saveSessionUseCase(session)

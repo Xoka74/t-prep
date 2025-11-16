@@ -26,15 +26,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizScreen(
-    subjectId: String,
+    moduleId: String,
     viewModel: QuizViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
     // TODO
     val state = viewModel.uiState.value
 
-    LaunchedEffect(subjectId) {
-        viewModel.startQuiz(subjectId)
+    LaunchedEffect(moduleId) {
+        viewModel.startQuiz(moduleId)
     }
 
     Scaffold(
@@ -63,7 +63,7 @@ private fun QuizContentView(
     viewModel: QuizViewModel,
     padding: PaddingValues
 ) {
-    val currentQuestion = state.currentCard
+    val currentCard = state.currentCard
 
     Column(modifier = Modifier
         .padding(padding)
@@ -79,18 +79,18 @@ private fun QuizContentView(
 
         // Question
         Text(
-            text = currentQuestion?.question ?: "",
+            text = currentCard?.question ?: "",
             style = MaterialTheme.typography.bodyLarge
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         // Options
-        currentQuestion?.options?.forEachIndexed { index, option ->
+        currentCard?.options?.forEachIndexed { index, option ->
             AnswerOption(
                 text = option,
                 isSelected = state.selectedAnswer == index,
-                isCorrect = state.isAnswerCorrect == true && index == currentQuestion.correctAnswer,
+                isCorrect = state.isAnswerCorrect == true && index == currentCard.correctAnswer,
                 isWrong = state.isAnswerCorrect == false && state.selectedAnswer == index,
                 onClick = { viewModel.selectAnswer(index) }
             )
@@ -100,7 +100,7 @@ private fun QuizContentView(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = { viewModel.nextQuestion() },
+            onClick = { viewModel.nextCard() },
             enabled = state.selectedAnswer != null,
             modifier = Modifier.fillMaxWidth()
         ) {

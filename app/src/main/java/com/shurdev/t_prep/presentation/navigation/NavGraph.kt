@@ -27,16 +27,16 @@ fun NavGraph() {
                 onSuccessLogin = {},
             )
         }
-        composable("subjects") {
-            ModulesScreen { subjectId ->
-                navController.navigate("quiz/$subjectId")
+        composable("modules") {
+            ModulesScreen { moduleId ->
+                navController.navigate("quiz/$moduleId")
             }
         }
 
-        composable("quiz/{subjectId}") { backStackEntry ->
-            val subjectId = backStackEntry.arguments?.getString("subjectId") ?: ""
+        composable("quiz/{moduleId}") { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
             QuizScreen(
-                subjectId = subjectId,
+                moduleId = moduleId,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -44,7 +44,7 @@ fun NavGraph() {
 
     LaunchedEffect(isAuthorizedState) {
         val route = when (isAuthorizedState) {
-            true -> "subjects"
+            true -> "modules"
             false -> "login"
             null -> "login"
         }

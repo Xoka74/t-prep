@@ -8,7 +8,7 @@ class StudySessionRepositoryImpl: StudySessionRepository {
     override suspend fun saveSession(session: StudySession) {
     }
 
-    override suspend fun getSessionsBySubject(subjectId: String): List<StudySession> {
+    override suspend fun getSessionsByModule(moduleId: String): List<StudySession> {
         return emptyList()
     }
 

@@ -19,7 +19,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.shurdev.tprep"
+        applicationId = "com.shurdev.t_prep"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

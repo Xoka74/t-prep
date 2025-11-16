@@ -4,6 +4,6 @@ data class Module(
     val id: String,
     val name: String,
     val description: String,
-    val totalQuestions: Int,
-    val completedQuestions: Int
+    val totalCards: Int,
+    val completedCards: Int
 )

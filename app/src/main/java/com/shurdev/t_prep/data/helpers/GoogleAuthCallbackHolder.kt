@@ -18,8 +18,6 @@ class GoogleAuthCallbackHolder {
         currentFire = activity.registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result: ActivityResult ->
-
-            val extras = result.data?.extras
             if (result.resultCode == RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 

@@ -37,8 +37,8 @@ fun ModuleCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val progress = if (module.totalQuestions > 0) {
-        module.completedQuestions.toFloat() / module.totalQuestions.toFloat()
+    val progress = if (module.totalCards > 0) {
+        module.completedCards.toFloat() / module.totalCards.toFloat()
     } else {
         0f
     }
@@ -102,8 +102,8 @@ fun ModuleCard(
 
             ProgressSection(
                 progress = progress,
-                completed = module.completedQuestions,
-                total = module.totalQuestions
+                completed = module.completedCards,
+                total = module.totalCards
             )
 
             Spacer(modifier = Modifier.height(16.dp))

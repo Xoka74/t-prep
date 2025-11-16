@@ -35,9 +35,9 @@ fun ResultsView(
     modifier: Modifier = Modifier
 ) {
     val score = state.score
-    val totalQuestions = state.cards.size
+    val totalCards = state.cards.size
     val percentage =
-        if (totalQuestions > 0) (score.toDouble() / totalQuestions * 100).toInt() else 0
+        if (totalCards > 0) (score.toDouble() / totalCards * 100).toInt() else 0
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -98,7 +98,7 @@ fun ResultsView(
 
                     ResultStatItem(
                         label = "Правильные ответы",
-                        value = "$score/$totalQuestions",
+                        value = "$score/$totalCards",
                         valueColor = MaterialTheme.colorScheme.primary
                     )
 
@@ -106,7 +106,7 @@ fun ResultsView(
 
                     ResultStatItem(
                         label = "Неправильные ответы",
-                        value = "${totalQuestions - score}/$totalQuestions",
+                        value = "${totalCards - score}/$totalCards",
                         valueColor = MaterialTheme.colorScheme.error
                     )
                 }

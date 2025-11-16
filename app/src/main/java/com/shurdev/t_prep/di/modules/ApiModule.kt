@@ -1,0 +1,30 @@
+package com.shurdev.t_prep.di.modules
+
+import com.shurdev.t_prep.data.api.AuthApi
+import com.shurdev.t_prep.data.api.CardsApi
+import com.shurdev.t_prep.data.api.ModulesApi
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.create
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ApiModule {
+
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(retrofit: Retrofit) = retrofit.create<AuthApi>()
+
+    @Provides
+    @Singleton
+    fun provideCardsApi(retrofit: Retrofit) = retrofit.create<CardsApi>()
+
+    @Provides
+    @Singleton
+    fun provideModulesApi(retrofit: Retrofit) = retrofit.create<ModulesApi>()
+}

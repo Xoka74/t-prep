@@ -6,7 +6,7 @@ import com.shurdev.t_prep.domain.repositories.CardRepository;
 class StartQuizUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke(subjectId: String): List<Card> {
-        return cardRepository.getCardByModule(subjectId)
+    suspend operator fun invoke(moduleId: String): List<Card> {
+        return cardRepository.getCardByModule(moduleId)
     }
 }
