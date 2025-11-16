@@ -1,6 +1,6 @@
 package com.shurdev.t_prep.domain.models
 
-data class Question(
+data class Card(
     val id: String,
     val subjectId: String,
     val question: String,

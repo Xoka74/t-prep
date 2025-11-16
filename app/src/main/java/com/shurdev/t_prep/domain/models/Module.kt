@@ -1,6 +1,6 @@
 package com.shurdev.t_prep.domain.models
 
-data class Subject(
+data class Module(
     val id: String,
     val name: String,
     val description: String,

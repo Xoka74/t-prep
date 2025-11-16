@@ -1,9 +1,9 @@
 package com.shurdev.t_prep.presentation.screens.quiz
 
-import com.shurdev.t_prep.domain.models.Question
+import com.shurdev.t_prep.domain.models.Card
 
 data class QuizState(
-    val questions: List<Question> = emptyList(),
+    val cards: List<Card> = emptyList(),
     val currentQuestionIndex: Int = 0,
     val selectedAnswer: Int? = null,
     val isAnswerCorrect: Boolean? = null,
@@ -12,10 +12,10 @@ data class QuizState(
     val showResults: Boolean = false,
     val error: String? = null
 ) {
-    val currentQuestion: Question?
-        get() = questions.getOrNull(currentQuestionIndex)
+    val currentCard: Card?
+        get() = cards.getOrNull(currentQuestionIndex)
 
     val progress: Float
-        get() = if (questions.isEmpty()) 0f
-        else (currentQuestionIndex + 1) / questions.size.toFloat()
+        get() = if (cards.isEmpty()) 0f
+        else (currentQuestionIndex + 1) / cards.size.toFloat()
 }

@@ -1,4 +1,4 @@
-package com.shurdev.t_prep.presentation.screens.subjects
+package com.shurdev.t_prep.presentation.screens.modules
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +18,9 @@ import com.shurdev.t_prep.presentation.components.ErrorView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubjectsScreen(
-    viewModel: SubjectsViewModel = hiltViewModel(),
-    onSubjectClick: (String) -> Unit
+fun ModulesScreen(
+    viewModel: ModulesViewModel = hiltViewModel(),
+    onModuleClick: (String) -> Unit
 ) {
     val state = viewModel.uiState.value
 
@@ -37,15 +37,15 @@ fun SubjectsScreen(
             }
 
             state.error != null -> {
-                ErrorView(error = state.error, onRetry = { viewModel.loadSubjects() })
+                ErrorView(error = state.error, onRetry = { viewModel.loadModules() })
             }
 
             else -> {
                 LazyColumn(modifier = Modifier.padding(padding)) {
-                    items(state.subjects) { subject ->
-                        SubjectCard(
-                            subject = subject,
-                            onClick = { onSubjectClick(subject.id) }
+                    items(state.modules) { subject ->
+                        ModuleCard(
+                            module = subject,
+                            onClick = { onModuleClick(subject.id) }
                         )
                     }
                 }

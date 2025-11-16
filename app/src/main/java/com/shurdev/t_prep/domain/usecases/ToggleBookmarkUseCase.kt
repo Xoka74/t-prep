@@ -1,12 +1,12 @@
 package com.shurdev.t_prep.domain.usecases;
 
-import com.shurdev.t_prep.domain.repositories.QuestionRepository;
+import com.shurdev.t_prep.domain.repositories.CardRepository;
 
 class ToggleBookmarkUseCase(
-        private val questionRepository:QuestionRepository
+        private val cardRepository:CardRepository
 ) {
     suspend operator fun invoke(questionId: String) {
-        questionRepository.toggleBookmark(questionId)
+        cardRepository.toggleBookmark(questionId)
     }
 }
 

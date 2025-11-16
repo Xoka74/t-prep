@@ -29,7 +29,7 @@ class QuizViewModel @Inject constructor(
             try {
                 val questions = startQuizUseCase(subjectId)
                 _uiState.value = _uiState.value.copy(
-                    questions = questions,
+                    cards = questions,
                     currentQuestionIndex = 0,
                     isLoading = false,
                     showResults = false
@@ -45,7 +45,7 @@ class QuizViewModel @Inject constructor(
 
     fun selectAnswer(selectedIndex: Int) {
         val currentState = _uiState.value
-        val currentQuestion = currentState.questions[currentState.currentQuestionIndex]
+        val currentQuestion = currentState.cards[currentState.currentQuestionIndex]
 
         val isCorrect = selectedIndex == currentQuestion.correctAnswer
         val updatedScore = if (isCorrect) currentState.score + 1 else currentState.score
@@ -59,7 +59,7 @@ class QuizViewModel @Inject constructor(
 
     fun nextQuestion() {
         val currentState = _uiState.value
-        if (currentState.currentQuestionIndex < currentState.questions.size - 1) {
+        if (currentState.currentQuestionIndex < currentState.cards.size - 1) {
             _uiState.value = currentState.copy(
                 currentQuestionIndex = currentState.currentQuestionIndex + 1,
                 selectedAnswer = null,
@@ -72,7 +72,7 @@ class QuizViewModel @Inject constructor(
 
     fun toggleBookmark() {
         viewModelScope.launch {
-            val currentQuestion = _uiState.value.currentQuestion
+            val currentQuestion = _uiState.value.currentCard
             currentQuestion?.let {
                 toggleBookmarkUseCase(it.id)
             }
@@ -88,7 +88,7 @@ class QuizViewModel @Inject constructor(
                 subjectId = "subject_id",
                 date = System.currentTimeMillis(),
                 correctAnswers = _uiState.value.score,
-                totalQuestions = _uiState.value.questions.size,
+                totalQuestions = _uiState.value.cards.size,
                 timeSpentInMinutes = 30
             )
             saveSessionUseCase(session)

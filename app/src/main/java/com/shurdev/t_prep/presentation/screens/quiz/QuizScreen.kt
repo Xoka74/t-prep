@@ -63,7 +63,7 @@ private fun QuizContentView(
     viewModel: QuizViewModel,
     padding: PaddingValues
 ) {
-    val currentQuestion = state.currentQuestion
+    val currentQuestion = state.currentCard
 
     Column(modifier = Modifier
         .padding(padding)

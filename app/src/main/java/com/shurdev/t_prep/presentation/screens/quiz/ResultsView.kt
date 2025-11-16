@@ -35,7 +35,7 @@ fun ResultsView(
     modifier: Modifier = Modifier
 ) {
     val score = state.score
-    val totalQuestions = state.questions.size
+    val totalQuestions = state.cards.size
     val percentage =
         if (totalQuestions > 0) (score.toDouble() / totalQuestions * 100).toInt() else 0
 

@@ -1,4 +1,4 @@
-package com.shurdev.t_prep.presentation.screens.subjects
+package com.shurdev.t_prep.presentation.screens.modules
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -30,16 +29,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.shurdev.t_prep.domain.models.Subject
+import com.shurdev.t_prep.domain.models.Module
 
 @Composable
-fun SubjectCard(
-    subject: Subject,
+fun ModuleCard(
+    module: Module,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val progress = if (subject.totalQuestions > 0) {
-        subject.completedQuestions.toFloat() / subject.totalQuestions.toFloat()
+    val progress = if (module.totalQuestions > 0) {
+        module.completedQuestions.toFloat() / module.totalQuestions.toFloat()
     } else {
         0f
     }
@@ -70,7 +69,7 @@ fun SubjectCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = subject.name,
+                        text = module.name,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -81,7 +80,7 @@ fun SubjectCard(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = subject.description,
+                        text = module.description,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2,
@@ -103,8 +102,8 @@ fun SubjectCard(
 
             ProgressSection(
                 progress = progress,
-                completed = subject.completedQuestions,
-                total = subject.totalQuestions
+                completed = module.completedQuestions,
+                total = module.totalQuestions
             )
 
             Spacer(modifier = Modifier.height(16.dp))

@@ -1,16 +1,25 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.secrets)
     kotlin("kapt")
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
     namespace = "com.shurdev.t_prep"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.shurdev.t_prep"
+        applicationId = "com.shurdev.tprep"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -22,7 +31,19 @@ android {
         }
     }
 
+    signingConfigs {
+        register("sharedDebug") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs["sharedDebug"]
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -71,6 +92,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime")
     implementation(libs.androidx.lifecycle.runtime.compose)
 
+    // Coil
+    implementation(libs.coil.compose)
+
     // Lifecycle & ViewModel
     implementation(libs.bundles.lifecycle)
 
@@ -89,6 +113,21 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+
+    // Logging
+    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
+
+    // Gson
+    implementation(libs.converter.gson)
+
+    // Google Auth
+    implementation(libs.play.services.auth)
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Testing
     testImplementation(libs.junit)
