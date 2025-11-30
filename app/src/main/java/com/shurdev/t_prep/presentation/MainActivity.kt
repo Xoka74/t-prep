@@ -4,36 +4,37 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import com.shurdev.t_prep.data.helpers.GoogleAuthCallbackHolder
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.shurdev.t_prep.domain.models.ThemeType
+import com.shurdev.t_prep.presentation.screens.settings.viewModel.SettingsLoadedState
+import com.shurdev.t_prep.presentation.screens.settings.viewModel.SettingsViewModel
 import com.shurdev.t_prep.ui.theme.TPrepTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var googleAuthCallbackHolder: GoogleAuthCallbackHolder
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        googleAuthCallbackHolder.updateCallback(this)
         setContent {
-            enableEdgeToEdge()
-            setContent {
-                TPrepTheme {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
-                        TPrepApp()
-                    }
-                }
+            val settingsViewModel = hiltViewModel<SettingsViewModel>()
+
+            val settingsUiState by settingsViewModel.uiState.collectAsState()
+
+            val themeType = (settingsUiState as? SettingsLoadedState)?.settings?.themeType
+
+            val isDarkTheme = when (themeType) {
+                ThemeType.Light -> false
+                ThemeType.Dark -> true
+                else -> isSystemInDarkTheme()
+            }
+
+            TPrepTheme(
+                darkTheme = isDarkTheme
+            ) {
+                TPrepApp()
             }
         }
-    }
-
-    override fun onDestroy() {
-        googleAuthCallbackHolder.clearCallback()
-        super.onDestroy()
     }
 }

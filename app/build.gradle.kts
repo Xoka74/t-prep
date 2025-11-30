@@ -4,9 +4,11 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.secrets)
-    kotlin("kapt")
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -68,7 +70,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 
     packaging {
@@ -80,72 +82,50 @@ android {
 }
 
 dependencies {
-    // Core Android
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    // Google Id
+    implementation(libs.googleid)
+    implementation(libs.androidx.credentials)
+    implementation(libs.credentials.play.services.auth)
+//    implementation(libs.play.services.auth)
 
-    // Compose
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.compose)
-    implementation(libs.androidx.runtime)
-    implementation("androidx.compose.runtime:runtime")
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Hilt Navigation
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Coil
     implementation(libs.coil.compose)
 
-    // Lifecycle & ViewModel
-    implementation(libs.bundles.lifecycle)
-
-    // Room Database
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-
-    // Hilt DI
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
-
-    // Coroutines
-    implementation(libs.bundles.coroutines)
-
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
-
     // Retrofit
     implementation(libs.retrofit)
-
-    // Logging
-    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
-
-    // Gson
+    implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
 
-    // Google Auth
-    implementation(libs.play.services.auth)
-    implementation("androidx.credentials:credentials:1.5.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation(libs.accompanist.permissions)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Test coroutines
-    testImplementation(libs.kotlinx.coroutines.test)
-
-    // Test Hilt
-    testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.compiler)
-}
-
-kapt {
-    correctErrorTypes = true
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

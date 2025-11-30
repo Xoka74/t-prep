@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">T-Prep</string>
     <string name="signInWithGoogle">Войти с помощью Google</string>
+    <string name="home">Главная</string>
+    <string name="modules">Модули</string>
+    <string name="profile">Профиль</string>
+    <string name="settings">Настройки</string>
+    <string name="logout">Выйти</string>
+    <string name="are_you_sure_you_want_to_logout">Вы уверены, что хотите выйти?</string>
+    <string name="continue_text">Продолжить</string>
+    <string name="cancel">Отменить</string>
+    <string name="try_again">Попробуйте снова</string>
+    <string name="app_theme">Тема приложения</string>
+    <string name="system">Системная</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Темная</string>
+    <string name="library">Библиотека</string>
+    <string name="search_hint">Поиск модулей</string>
+    <string name="create_module">Создать новый модуль</string>
+    <string name="create">Создать</string>
+    <string name="required_field">Обязательное поле</string>
+    <string name="add_description">Добавьте описание...</string>
+    <string name="title">Название</string>
 </resources>

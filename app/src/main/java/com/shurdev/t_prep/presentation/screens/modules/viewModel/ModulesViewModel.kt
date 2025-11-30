@@ -1,10 +1,11 @@
-package com.shurdev.t_prep.presentation.screens.modules;
+package com.shurdev.t_prep.presentation.screens.modules.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.usecases.GetModulesUseCase
+import com.shurdev.t_prep.presentation.screens.modules.ModulesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

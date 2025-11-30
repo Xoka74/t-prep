@@ -2,6 +2,7 @@ package com.shurdev.t_prep.di.modules
 
 import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
+import com.shurdev.t_prep.data.api.MeApi
 import com.shurdev.t_prep.data.api.ModulesApi
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,8 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideModulesApi(retrofit: Retrofit) = retrofit.create<ModulesApi>()
+
+    @Provides
+    @Singleton
+    fun provideMeApi(retrofit: Retrofit) = retrofit.create<MeApi>()
 }

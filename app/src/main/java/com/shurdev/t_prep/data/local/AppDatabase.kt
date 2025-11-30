@@ -11,7 +11,8 @@ import com.shurdev.t_prep.data.local.entities.ModuleEntity
 
 @Database(
     entities = [ModuleEntity::class, CardEntity::class, StudySessionEntity::class],
-    version = 1
+    version = 1,
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun moduleDao(): ModuleDao

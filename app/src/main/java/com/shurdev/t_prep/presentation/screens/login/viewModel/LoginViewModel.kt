@@ -20,7 +20,8 @@ class LoginViewModel @Inject constructor(
                 authRepository.login()
             }.onSuccess {
                 updateUiState { LoginSuccessState }
-            }.onFailure {
+            }.onFailure { it ->
+                print(it)
                 updateUiState { LoginIdleState(error = "Неизвестная ошибка") }
             }
         }
