@@ -79,7 +79,7 @@ fun CreateModuleScreen(
                 onTextChange = {
                     viewModel.updateFormData { form -> form.copy(description = it) }
                 },
-                error = validationError?.nameError?.toErrorString(
+                error = validationError?.descriptionError?.toErrorString(
                     required = stringResource(R.string.required_field),
                 ),
             )

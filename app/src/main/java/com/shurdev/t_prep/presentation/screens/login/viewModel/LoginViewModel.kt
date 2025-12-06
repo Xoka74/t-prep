@@ -1,5 +1,6 @@
 package com.shurdev.t_prep.presentation.screens.login.viewModel
 
+import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.repositories.AuthRepository
 import com.shurdev.t_prep.presentation.components.viewModel.BaseViewModel
@@ -12,12 +13,12 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : BaseViewModel<LoginUiState>(LoginIdleState()) {
-    fun login() {
+    fun login(credential: GetCredentialResponse) {
         updateUiState { LoginLoadingState }
 
         viewModelScope.launch {
             runSuspendCatching {
-                authRepository.login()
+                authRepository.login(credential)
             }.onSuccess {
                 updateUiState { LoginSuccessState }
             }.onFailure { it ->

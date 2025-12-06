@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.secrets)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -82,11 +83,14 @@ android {
 }
 
 dependencies {
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
+
     // Google Id
     implementation(libs.googleid)
     implementation(libs.androidx.credentials)
     implementation(libs.credentials.play.services.auth)
-//    implementation(libs.play.services.auth)
 
     // Hilt
     implementation(libs.hilt.android)
