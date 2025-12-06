@@ -10,26 +10,12 @@ class ModuleRepositoryImpl(
     private val moduleDao: ModuleDao,
     private val modulesApi: ModulesApi,
 ) : ModuleRepository {
-
-    val modules = (0..10).map {
-        Module(
-            it.toString(),
-            "Новый модуль",
-            "Описание",
-            10,
-            10
-        )
-    }
-
     override suspend fun getModules(): List<Module> {
-        return modules
-
-//        return modulesApi.getUserModules().map { it.toDomainModel() }
+        return modulesApi.getUserModules().map { it.toDomainModel() }
     }
 
     override suspend fun getModuleById(id: String): Module? {
-        return modules.firstOrNull { it.id == id }
-//        return modulesApi.getUserModule(id.toInt()).toDomainModel()
+        return modulesApi.getUserModule(id.toInt())?.toDomainModel()
     }
 
     override suspend fun updateModuleProgress(moduleId: String, completed: Int) {

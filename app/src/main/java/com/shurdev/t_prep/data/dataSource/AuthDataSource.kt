@@ -6,6 +6,7 @@ import com.shurdev.t_prep.data.models.AuthData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.core.content.edit
 
 class AuthDataSource(
     private val prefs: SharedPreferences,
@@ -22,18 +23,16 @@ class AuthDataSource(
     fun accessToken(): String? = prefs.getString(LocalKeys.ACCESS_TOKEN, null)
 
     fun save(authData: AuthData) {
-        with(prefs.edit()) {
+        prefs.edit {
             putString(LocalKeys.ACCESS_TOKEN, authData.accessToken)
-            apply()
         }
 
         return _isAuthenticated.update { true }
     }
 
     fun clear() {
-        with(prefs.edit()) {
+        prefs.edit {
             remove(LocalKeys.ACCESS_TOKEN)
-            apply()
         }
 
         return _isAuthenticated.update { false }

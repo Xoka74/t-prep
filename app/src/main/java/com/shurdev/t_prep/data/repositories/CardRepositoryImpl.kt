@@ -10,7 +10,7 @@ class CardRepositoryImpl(
     private val cardsApi: CardsApi,
 ) : CardRepository {
     override suspend fun getCardByModule(moduleId: String): List<Card> {
-        return (0..10).map {
+        return (0..2).map {
             Card(
                 id=it.toString(),
                 moduleId = "1",

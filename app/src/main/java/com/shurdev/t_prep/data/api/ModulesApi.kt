@@ -9,7 +9,7 @@ interface ModulesApi {
     suspend fun getUserModules(): List<ModuleDto>
 
     @GET("modules/{id}")
-    suspend fun getUserModule(id: Int): ModuleDto
+    suspend fun getUserModule(id: Int): ModuleDto?
 
     @DELETE("modules/{id}")
     suspend fun deleteUserModule(id: Int)
