@@ -5,4 +5,5 @@ import com.shurdev.domain.forms.ValidationError
 
 data class ModuleFormValidationError(
     val nameError: ValidationError? = null,
+    val descriptionError: ValidationError? = null,
 ) : FormValidationError()

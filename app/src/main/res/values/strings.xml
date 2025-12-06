@@ -19,6 +19,6 @@
     <string name="create_module">Создать новый модуль</string>
     <string name="create">Создать</string>
     <string name="required_field">Обязательное поле</string>
-    <string name="add_description">Добавьте описание...</string>
+    <string name="add_description">Добавьте описание…</string>
     <string name="title">Название</string>
 </resources>

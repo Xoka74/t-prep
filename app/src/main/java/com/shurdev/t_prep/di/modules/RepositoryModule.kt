@@ -1,6 +1,5 @@
 package com.shurdev.t_prep.di.modules
 
-import android.content.Context
 import androidx.credentials.CredentialManager
 import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
@@ -17,7 +16,6 @@ import com.shurdev.t_prep.data.repositories.MeRepositoryImpl
 import com.shurdev.t_prep.data.repositories.ModuleRepositoryImpl
 import com.shurdev.t_prep.data.repositories.SettingsRepositoryImpl
 import com.shurdev.t_prep.data.repositories.StudySessionRepositoryImpl
-import com.shurdev.t_prep.di.qualifiers.ServerClientId
 import com.shurdev.t_prep.domain.repositories.AuthRepository
 import com.shurdev.t_prep.domain.repositories.CardRepository
 import com.shurdev.t_prep.domain.repositories.LogoutRepository
@@ -27,7 +25,6 @@ import com.shurdev.t_prep.domain.repositories.StudySessionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -60,16 +57,10 @@ object RepositoryModule {
     fun provideAuthRepository(
         authApi: AuthApi,
         authDataSource: AuthDataSource,
-        credentialManager: CredentialManager,
-        @ApplicationContext context: Context,
-        @ServerClientId serverClientId: String,
     ): AuthRepository {
         return AuthRepositoryImpl(
             authApi = authApi,
-            context = context,
             authDataSource = authDataSource,
-            serverClientId = serverClientId,
-            credentialManager = credentialManager,
         )
     }
 
@@ -93,11 +84,9 @@ object RepositoryModule {
     @Singleton
     fun provideLogoutRepository(
         authDataSource: AuthDataSource,
-        credentialManager: CredentialManager,
     ): LogoutRepository {
         return LogoutRepositoryImpl(
             authDataSource = authDataSource,
-            credentialManager = credentialManager,
         )
     }
 }
