@@ -72,11 +72,6 @@ fun LoginContent(
     error: String? = null,
 ) {
     Center {
-        AsyncImage(
-            model = "https://avatar.iran.liara.run/public/15",
-            contentDescription = null,
-        )
-
         Spacer(Modifier.height(10.dp))
 
         SignInWithGoogleButton(
