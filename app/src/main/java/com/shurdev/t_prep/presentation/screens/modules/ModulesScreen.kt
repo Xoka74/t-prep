@@ -12,6 +12,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ fun ModulesScreen(
     onModuleClick: (String) -> Unit,
     onCreateModuleClick: () -> Unit,
 ) {
+
     NotificationPermissionWrapper {
         val state = viewModel.uiState.value
 
@@ -50,35 +52,40 @@ fun ModulesScreen(
                 }
             }
         ) {
-            Box(
-                modifier= Modifier.fillMaxSize()
+            PullToRefreshBox(
+                onRefresh = viewModel::loadModules,
+                isRefreshing = state.isLoading
             ) {
-                when {
-                    state.isLoading -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator()
+                Box(
+                    modifier= Modifier.fillMaxSize()
+                ) {
+                    when {
+                        state.isLoading -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
                         }
-                    }
 
-                    state.error != null -> {
-                        ErrorView(error = state.error, onRetry = { viewModel.loadModules() })
-                    }
+                        state.error != null -> {
+                            ErrorView(error = state.error, onRetry = { viewModel.loadModules() })
+                        }
 
-                    else -> {
-                        Column {
-                            SearchField(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                debounceTimeMillis = 300L,
-                                onSearchTextChange = {},
-                                hint = stringResource(R.string.search_hint),
-                            )
+                        else -> {
+                            Column {
+                                SearchField(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    debounceTimeMillis = 300L,
+                                    onSearchTextChange = {},
+                                    hint = stringResource(R.string.search_hint),
+                                )
 
-                            LazyColumn {
-                                items(state.modules) { module ->
-                                    ModuleCard(
-                                        module = module,
-                                        onClick = { onModuleClick(module.id) }
-                                    )
+                                LazyColumn {
+                                    items(state.modules) { module ->
+                                        ModuleCard(
+                                            module = module,
+                                            onClick = { onModuleClick(module.id) }
+                                        )
+                                    }
                                 }
                             }
                         }
