@@ -21,4 +21,6 @@
     <string name="required_field">Обязательное поле</string>
     <string name="add_description">Добавьте описание…</string>
     <string name="title">Название</string>
+    <string name="question">Вопрос</string>
+    <string name="answer">Ответ</string>
 </resources>

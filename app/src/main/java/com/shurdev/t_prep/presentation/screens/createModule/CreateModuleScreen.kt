@@ -22,7 +22,7 @@ import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
 import com.shurdev.t_prep.presentation.components.layout.StickyBottomColumn
 import com.shurdev.t_prep.presentation.components.textFields.AppTextField
-import com.shurdev.t_prep.presentation.screens.createModule.components.CardsCreationView
+import com.shurdev.t_prep.presentation.screens.createModule.components.CardsCreationList
 import com.shurdev.t_prep.presentation.screens.createModule.viewModel.CreateModuleViewModel
 import com.shurdev.t_prep.presentation.screens.modules.viewModel.form.ModuleFormValidationError
 
@@ -91,7 +91,9 @@ fun CreateModuleScreen(
                 ),
             )
 
-            CardsCreationView(
+            Spacer(Modifier.height(8.dp))
+
+            CardsCreationList(
                 cards = form.cards,
                 onCardAdd = {
                     viewModel.updateFormData { form ->
@@ -103,6 +105,11 @@ fun CreateModuleScreen(
                         form.copy(cards = form.cards.mapIndexed { cardIndex, item ->
                             if (cardIndex == index) card else item
                         })
+                    }
+                },
+                onCardRemove = { index ->
+                    viewModel.updateFormData { form ->
+                        form.copy(cards = form.cards.filterIndexed { ind, _ -> ind != index })
                     }
                 }
             )
