@@ -55,7 +55,7 @@ internal fun ProfileRoute(
 
     ProfileScreen(
         uiState = uiState,
-        onLogoutClick = viewModel::logout,
+        onLogoutClick = ::onLogoutClick,
         onSettingsClick = onSettingsClick,
         onTryAgain = viewModel::loadProfile,
     )
