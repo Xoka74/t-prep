@@ -4,15 +4,19 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.usecases.GetModulesUseCase
 import com.shurdev.t_prep.presentation.screens.modules.ModulesState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ModulesViewModel @Inject constructor(
-    private val getModulesUseCase: GetModulesUseCase
+    private val getModulesUseCase: GetModulesUseCase,
+    private val moduleEventPublisher: ModuleEventPublisher,
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(ModulesState())
@@ -20,6 +24,15 @@ class ModulesViewModel @Inject constructor(
 
     init {
         loadModules()
+        subscribeToEvents()
+    }
+
+    fun subscribeToEvents() {
+        viewModelScope.launch {
+            moduleEventPublisher.events.collect {
+                loadModules()
+            }
+        }
     }
 
     fun loadModules() {

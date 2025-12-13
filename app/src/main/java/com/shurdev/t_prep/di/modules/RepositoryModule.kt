@@ -16,6 +16,7 @@ import com.shurdev.t_prep.data.repositories.MeRepositoryImpl
 import com.shurdev.t_prep.data.repositories.ModuleRepositoryImpl
 import com.shurdev.t_prep.data.repositories.SettingsRepositoryImpl
 import com.shurdev.t_prep.data.repositories.StudySessionRepositoryImpl
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.repositories.AuthRepository
 import com.shurdev.t_prep.domain.repositories.CardRepository
 import com.shurdev.t_prep.domain.repositories.LogoutRepository
@@ -36,8 +37,9 @@ object RepositoryModule {
     fun provideModuleRepository(
         moduleDao: ModuleDao,
         modulesApi: ModulesApi,
+        moduleEventPublisher: ModuleEventPublisher,
     ): ModuleRepository {
-        return ModuleRepositoryImpl(moduleDao, modulesApi)
+        return ModuleRepositoryImpl(moduleDao, modulesApi, moduleEventPublisher)
     }
 
     @Provides
