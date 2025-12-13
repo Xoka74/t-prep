@@ -72,12 +72,12 @@ fun ModulesScreen(
 
                         else -> {
                             Column {
-                                SearchField(
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    debounceTimeMillis = 300L,
-                                    onSearchTextChange = {},
-                                    hint = stringResource(R.string.search_hint),
-                                )
+//                                SearchField(
+//                                    modifier = Modifier.padding(horizontal = 16.dp),
+//                                    debounceTimeMillis = 300L,
+//                                    onSearchTextChange = {},
+//                                    hint = stringResource(R.string.search_hint),
+//                                )
 
                                 LazyColumn {
                                     items(state.modules) { module ->
