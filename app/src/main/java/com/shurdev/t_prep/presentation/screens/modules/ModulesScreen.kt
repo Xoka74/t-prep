@@ -14,6 +14,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,44 +36,45 @@ fun ModulesScreen(
     onModuleClick: (String) -> Unit,
     onCreateModuleClick: () -> Unit,
 ) {
+    val state by viewModel.uiState.collectAsState()
 
-    NotificationPermissionWrapper {
-        val state = viewModel.uiState.value
-
-        DefaultScreenLayout(
-            title = stringResource(R.string.library),
-            fab = {
-                FloatingActionButton(
-                    modifier = Modifier.padding(10.dp),
-                    onClick = onCreateModuleClick,
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = stringResource(R.string.create_module)
-                    )
-                }
-            }
-        ) {
-            PullToRefreshBox(
-                onRefresh = viewModel::loadModules,
-                isRefreshing = state.isLoading
+    DefaultScreenLayout(
+        title = stringResource(R.string.library),
+        fab = {
+            FloatingActionButton(
+                modifier = Modifier.padding(10.dp),
+                onClick = onCreateModuleClick,
             ) {
-                Box(
-                    modifier= Modifier.fillMaxSize()
-                ) {
-                    when {
-                        state.isLoading -> {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                CircularProgressIndicator()
-                            }
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(R.string.create_module)
+                )
+            }
+        }
+    ) {
+        PullToRefreshBox(
+            onRefresh = viewModel::loadModules,
+            isRefreshing = state.isLoading
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                when {
+                    state.isLoading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
+                    }
 
-                        state.error != null -> {
-                            ErrorView(error = state.error, onRetry = { viewModel.loadModules() })
-                        }
+                    state.error != null -> {
+                        ErrorView(error = state.error!!, onRetry = { viewModel.loadModules() })
+                    }
 
-                        else -> {
-                            Column {
+                    else -> {
+                        Column {
 //                                SearchField(
 //                                    modifier = Modifier.padding(horizontal = 16.dp),
 //                                    debounceTimeMillis = 300L,
@@ -79,13 +82,12 @@ fun ModulesScreen(
 //                                    hint = stringResource(R.string.search_hint),
 //                                )
 
-                                LazyColumn {
-                                    items(state.modules) { module ->
-                                        ModuleCard(
-                                            module = module,
-                                            onClick = { onModuleClick(module.id) }
-                                        )
-                                    }
+                            LazyColumn {
+                                items(state.modules) { module ->
+                                    ModuleCard(
+                                        module = module,
+                                        onClick = { onModuleClick(module.id) }
+                                    )
                                 }
                             }
                         }
