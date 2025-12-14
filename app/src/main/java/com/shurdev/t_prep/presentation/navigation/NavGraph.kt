@@ -25,9 +25,7 @@ fun NavGraph(
     NavHost(
         modifier = Modifier.padding(padding),
         navController = navController,
-//        startDestination = "login"
-//        startDestination = "quiz/1"
-        startDestination = "cards/1"
+        startDestination = "login"
     ) {
         composable("login") {
             LoginScreen(

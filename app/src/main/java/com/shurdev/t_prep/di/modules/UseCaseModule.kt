@@ -6,7 +6,6 @@ import com.shurdev.t_prep.domain.repositories.StudySessionRepository
 import com.shurdev.t_prep.domain.usecases.GetModulesUseCase
 import com.shurdev.t_prep.domain.usecases.SaveSessionUseCase
 import com.shurdev.t_prep.domain.usecases.StartQuizUseCase
-import com.shurdev.t_prep.domain.usecases.ToggleBookmarkUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,12 +25,6 @@ object UseCaseModule {
     @Singleton
     fun provideStartQuizUseCase(repository: CardRepository): StartQuizUseCase {
         return StartQuizUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideToggleBookmarkUseCase(repository: CardRepository): ToggleBookmarkUseCase {
-        return ToggleBookmarkUseCase(repository)
     }
 
     @Provides

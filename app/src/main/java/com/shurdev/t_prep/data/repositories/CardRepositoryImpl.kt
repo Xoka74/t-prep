@@ -10,7 +10,7 @@ class CardRepositoryImpl(
     private val cardsApi: CardsApi,
 ) : CardRepository {
     override suspend fun getCardByModule(moduleId: String): List<Card> {
-        return (0..2).map {
+        /*return (0..2).map {
             Card(
                 id=it.toString(),
                 moduleId = "1",
@@ -20,18 +20,11 @@ class CardRepositoryImpl(
                 explanation = "",
                 difficulty = Difficulty.MEDIUM
             )
-        }
-//        return cardsApi.getCardsByModuleId(moduleId.toInt()).map { it.toDomainModel() }
+        }*/
+        return cardsApi.getCardsByModuleId(moduleId.toInt()).map { it.toDomainModel() }
     }
 
     override suspend fun getCardById(id: String): Card? {
         return cardsApi.getCardById(id.toInt())?.toDomainModel()
-    }
-
-    override suspend fun toggleBookmark(cardId: String) {
-    }
-
-    override suspend fun getBookmarkedCards(): List<Card> {
-        return emptyList()
     }
 }
