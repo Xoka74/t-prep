@@ -2,6 +2,7 @@ package com.shurdev.t_prep.data.api
 
 import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.data.models.CardDto
+import com.shurdev.t_prep.data.models.ListResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,7 +16,7 @@ interface CardsApi {
     ): CardDto?
 
     @GET("modules/{moduleId}/cards")
-    suspend fun getCardsByModuleId(@Path("moduleId") moduleId: Int): List<CardDto>
+    suspend fun getCardsByModuleId(@Path("moduleId") moduleId: Int): ListResponse<CardDto>
 
     @POST("modules/{moduleId}/cards")
     suspend fun createCard(

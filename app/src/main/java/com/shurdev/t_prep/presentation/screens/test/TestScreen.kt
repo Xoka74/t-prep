@@ -45,16 +45,11 @@ import com.shurdev.t_prep.presentation.screens.quiz.LoadingView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestScreen(
-    moduleId: String,
     viewModel: CardsViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
     val state = viewModel.uiState.value
     val cardColor = Color(236, 236, 236, 255)
-
-    LaunchedEffect(moduleId) {
-        viewModel.loadCards(moduleId)
-    }
 
     Scaffold(
         topBar = {

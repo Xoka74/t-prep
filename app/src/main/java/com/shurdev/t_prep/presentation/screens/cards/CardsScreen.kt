@@ -19,18 +19,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,10 +32,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shurdev.t_prep.presentation.components.cards.FlipCard
+import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
 import com.shurdev.t_prep.presentation.screens.cards.viewModel.CardsViewModel
 import com.shurdev.t_prep.presentation.screens.quiz.LoadingView
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardsScreen(
     moduleId: String,
@@ -53,22 +47,10 @@ fun CardsScreen(
     val state = viewModel.uiState.value
     val cardColor = Color(236, 236, 236, 255)
 
-    LaunchedEffect(moduleId) {
-        viewModel.loadCards(moduleId)
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Мои карточки") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padding ->
+    DefaultScreenLayout(
+        onBackInvoked = onBack,
+        title = "Модуль",
+    ) {
         when {
             state.isLoading -> LoadingView()
             state.error != null -> Text(state.error ?: "")
@@ -79,7 +61,6 @@ fun CardsScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(top = 32.dp)
-                            .padding(padding)
                     ) {
                         Card(
                             modifier = Modifier
@@ -200,7 +181,9 @@ fun CardsScreen(
                                         Text(
                                             modifier = Modifier
                                                 .padding(16.dp),
-                                            text = state.currentCard?.options?.getOrNull(correctAnswerIndex).toString() ?: "",
+                                            text = state.currentCard?.options?.getOrNull(
+                                                correctAnswerIndex
+                                            ).toString() ?: "",
                                             textAlign = TextAlign.Center
                                         )
                                     }

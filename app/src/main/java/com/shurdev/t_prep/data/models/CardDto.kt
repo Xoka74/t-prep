@@ -1,10 +1,12 @@
 package com.shurdev.t_prep.data.models
 
+import com.google.gson.annotations.SerializedName
+
 data class CardDto(
-    val id: Int,
+    val id: String,
     val question: String,
-    val answer: String,
-    val moduleId: Int,
-    val createdAt: String,
-    val updatedAt: String,
+    @SerializedName("answer_variant")
+    val answerVariant : List<String>,
+    @SerializedName("right_answer")
+    val rightAnswer: Int,
 )

@@ -6,12 +6,9 @@ import com.shurdev.t_prep.domain.models.Card
 
 fun CardDto.toDomainModel() : Card {
     return Card(
-        id = id.toString(),
-        moduleId = moduleId.toString(),
-        correctAnswer = 1,
+        id = id,
+        correctAnswer = rightAnswer,
         question = question,
-        options = listOf("1"),
-        explanation = "Correct Answer",
-        difficulty = Difficulty.MEDIUM
+        options = answerVariant,
     )
 }

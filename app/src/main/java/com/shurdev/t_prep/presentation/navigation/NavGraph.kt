@@ -40,7 +40,7 @@ fun NavGraph(
         composable("modules") {
             ModulesScreen(
                 onModuleClick = { moduleId ->
-                    navController.navigate("quiz/$moduleId")
+                    navController.navigate("cards/$moduleId")
                 },
                 onCreateModuleClick = {
                     navController.navigate("create_module")
@@ -87,9 +87,7 @@ fun NavGraph(
         }
 
         composable("test/{moduleId}") { backStackEntry ->
-            val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
             TestScreen(
-                moduleId = moduleId,
                 onBack = navController::navigateUp
             )
         }

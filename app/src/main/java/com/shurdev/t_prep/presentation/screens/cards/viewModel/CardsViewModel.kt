@@ -2,6 +2,7 @@ package com.shurdev.t_prep.presentation.screens.cards.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.repositories.CardRepository
@@ -14,13 +15,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CardsViewModel @Inject constructor(
-    private val cardRepository: CardRepository
+    private val cardRepository: CardRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val moduleId = savedStateHandle["moduleId"] ?: ""
 
     private val _uiState = mutableStateOf(CardsState())
     val uiState: State<CardsState> = _uiState
 
-    fun loadCards(moduleId: String) {
+    init {
+        loadCards()
+    }
+
+    fun loadCards() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {

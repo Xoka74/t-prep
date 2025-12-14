@@ -20,7 +20,7 @@ class CardRepositoryImpl(
     private val csvReader: CsvReader,
 ) : CardRepository {
     override suspend fun getCardByModule(moduleId: String): List<Card> {
-        return cardsApi.getCardsByModuleId(moduleId.toInt()).map { it.toDomainModel() }
+        return cardsApi.getCardsByModuleId(moduleId.toInt()).items.map { it.toDomainModel() }
     }
 
     override suspend fun createCard(data: CardDataDto): CardDto {
