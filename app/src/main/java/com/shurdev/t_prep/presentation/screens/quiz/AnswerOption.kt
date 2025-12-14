@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AnswerOption(
-    text: String,
+    answerIndex: Int,
+    answerText: String,
     isSelected: Boolean,
     isCorrect: Boolean = false,
     isWrong: Boolean = false,
@@ -66,9 +67,6 @@ fun AnswerOption(
             width = if (isSelected || isCorrect || isWrong) 2.dp else 1.dp,
             color = borderColor
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isSelected) 4.dp else 1.dp
-        )
     ) {
         Row(
             modifier = Modifier
@@ -78,7 +76,17 @@ fun AnswerOption(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = text,
+                modifier = Modifier
+                    .padding(end = 32.dp),
+                text = answerIndex.toString(),
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
+                    color = textColor
+                )
+            )
+
+            Text(
+                text = answerText,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
                     color = textColor

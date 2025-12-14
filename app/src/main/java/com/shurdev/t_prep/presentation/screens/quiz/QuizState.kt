@@ -14,8 +14,4 @@ data class QuizState(
 ) {
     val currentCard: Card?
         get() = cards.getOrNull(currentCardIndex)
-
-    val progress: Float
-        get() = if (cards.isEmpty()) 0f
-        else (currentCardIndex + 1) / cards.size.toFloat()
 }

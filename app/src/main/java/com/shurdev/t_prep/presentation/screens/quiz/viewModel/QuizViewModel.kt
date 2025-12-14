@@ -1,4 +1,4 @@
-package com.shurdev.t_prep.presentation.screens.quiz
+package com.shurdev.t_prep.presentation.screens.quiz.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.models.StudySession
 import com.shurdev.t_prep.domain.usecases.SaveSessionUseCase
 import com.shurdev.t_prep.domain.usecases.StartQuizUseCase
-import com.shurdev.t_prep.domain.usecases.ToggleBookmarkUseCase
+import com.shurdev.t_prep.presentation.screens.quiz.QuizState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizViewModel @Inject constructor(
     private val startQuizUseCase: StartQuizUseCase,
-    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
     private val saveSessionUseCase: SaveSessionUseCase
 ) : ViewModel() {
 
@@ -70,26 +69,17 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun toggleBookmark() {
-        viewModelScope.launch {
-            val currentCard = _uiState.value.currentCard
-            currentCard?.let {
-                toggleBookmarkUseCase(it.id)
-            }
-        }
-    }
-
     private fun finishQuiz() {
         _uiState.value = _uiState.value.copy(showResults = true)
 
         viewModelScope.launch {
             val session = StudySession(
                 id = UUID.randomUUID().toString(),
-                moduleId = "module_id",
+                moduleId = "module_id", // TODO
                 date = System.currentTimeMillis(),
                 correctAnswers = _uiState.value.score,
                 totalCards = _uiState.value.cards.size,
-                timeSpentInMinutes = 30
+                timeSpentInMinutes = 30 // TODO
             )
             saveSessionUseCase(session)
         }
