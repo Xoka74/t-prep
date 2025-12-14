@@ -1,5 +1,6 @@
 package com.shurdev.t_prep.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import com.shurdev.t_prep.presentation.components.bottomNavigation.BottomNavigat
 import com.shurdev.t_prep.presentation.components.viewModel.AuthViewModel
 import com.shurdev.t_prep.presentation.navigation.NavGraph
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun TPrepApp() {
     val navController = rememberNavController()
@@ -69,7 +71,7 @@ fun TPrepApp() {
             val route = when (isAuthorizedState) {
                 true -> "modules"
                 false -> "login"
-                null -> "login"
+                null -> "splash"
             }
 
             navController.navigate(route) {

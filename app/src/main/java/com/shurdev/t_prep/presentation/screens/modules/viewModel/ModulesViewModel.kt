@@ -1,10 +1,9 @@
 package com.shurdev.t_prep.presentation.screens.modules.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.usecases.GetModulesUseCase
+import com.shurdev.t_prep.presentation.components.viewModel.BaseViewModel
 import com.shurdev.t_prep.presentation.screens.modules.ModulesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,30 +11,42 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModulesViewModel @Inject constructor(
-    private val getModulesUseCase: GetModulesUseCase
-) : ViewModel() {
-
-    private val _uiState = mutableStateOf(ModulesState())
-    val uiState: State<ModulesState> = _uiState
-
+    private val getModulesUseCase: GetModulesUseCase,
+    private val moduleEventPublisher: ModuleEventPublisher,
+) : BaseViewModel<ModulesState>(
+    initialState = ModulesState()
+) {
     init {
         loadModules()
+        subscribeToEvents()
+    }
+
+    fun subscribeToEvents() {
+        viewModelScope.launch {
+            moduleEventPublisher.events.collect {
+                loadModules()
+            }
+        }
     }
 
     fun loadModules() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            updateUiState { it.copy(isLoading = true) }
             try {
                 val modules = getModulesUseCase()
-                _uiState.value = _uiState.value.copy(
-                    modules = modules,
-                    isLoading = false
-                )
+                updateUiState {
+                    it.copy(
+                        modules = modules,
+                        isLoading = false
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message,
-                    isLoading = false
-                )
+                updateUiState {
+                    it.copy(
+                        error = e.message,
+                        isLoading = false
+                    )
+                }
             }
         }
     }

@@ -10,18 +10,11 @@ class CardRepositoryImpl(
     private val cardsApi: CardsApi,
 ) : CardRepository {
     override suspend fun getCardByModule(moduleId: String): List<Card> {
-        /*return (0..2).map {
-            Card(
-                id=it.toString(),
-                moduleId = "1",
-                question = "Some question",
-                options = listOf("1","2","3", "4"),
-                correctAnswer = 1,
-                explanation = "",
-                difficulty = Difficulty.MEDIUM
-            )
-        }*/
         return cardsApi.getCardsByModuleId(moduleId.toInt()).map { it.toDomainModel() }
+    }
+
+    override suspend fun createCard(data: CardDataDto): CardDto {
+        return cardsApi.createCard(data)
     }
 
     override suspend fun getCardById(id: String): Card? {
