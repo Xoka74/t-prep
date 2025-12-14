@@ -8,7 +8,6 @@ import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCreatedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.models.Module
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
-import com.shurdev.t_prep.utils.runSuspendCatching
 
 class ModuleRepositoryImpl(
     private val moduleDao: ModuleDao,
@@ -16,7 +15,7 @@ class ModuleRepositoryImpl(
     private val moduleEventPublisher: ModuleEventPublisher,
 ) : ModuleRepository {
     override suspend fun getModules(): List<Module> {
-        return modulesApi.getUserModules().map { it.toDomainModel() }
+        return modulesApi.getUserModules().items.map { it.toDomainModel() }
     }
 
     override suspend fun getModuleById(id: String): Module? {

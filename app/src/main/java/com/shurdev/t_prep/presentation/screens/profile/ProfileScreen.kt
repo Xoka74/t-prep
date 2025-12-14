@@ -71,9 +71,9 @@ internal fun ProfileScreen(
     DefaultScreenLayout(
         title = stringResource(R.string.profile),
         actions = {
-            SettingsAction(
-                onClick = onSettingsClick,
-            )
+//            SettingsAction(
+//                onClick = onSettingsClick,
+//            )
         }
     ) {
         Column {

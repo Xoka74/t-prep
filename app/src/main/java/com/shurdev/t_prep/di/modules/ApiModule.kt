@@ -4,6 +4,7 @@ import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
 import com.shurdev.t_prep.data.api.MeApi
 import com.shurdev.t_prep.data.api.ModulesApi
+import com.shurdev.t_prep.data.api.PushApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +29,10 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideModulesApi(retrofit: Retrofit) = retrofit.create<ModulesApi>()
+
+    @Provides
+    @Singleton
+    fun providePushApi(retrofit: Retrofit) = retrofit.create<PushApi>()
 
     @Provides
     @Singleton

@@ -4,27 +4,37 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.shurdev.domain.forms.EditableState
 import com.shurdev.domain.forms.FormSubmittedState
 import com.shurdev.domain.forms.FormSubmittingState
 import com.shurdev.domain.forms.FormValidationErrorState
 import com.shurdev.t_prep.R
-import com.shurdev.t_prep.data.models.CardData
-import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
+import com.shurdev.t_prep.domain.models.AccessLevel
+import com.shurdev.t_prep.presentation.components.buttons.SingleChoiceDialogButton
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
 import com.shurdev.t_prep.presentation.components.layout.StickyBottomColumn
 import com.shurdev.t_prep.presentation.components.textFields.AppTextField
 import com.shurdev.t_prep.presentation.screens.createModule.components.CardsCreationList
+import com.shurdev.t_prep.presentation.screens.createModule.components.CreateModuleButtons
 import com.shurdev.t_prep.presentation.screens.createModule.viewModel.CreateModuleViewModel
 import com.shurdev.t_prep.presentation.screens.modules.viewModel.form.ModuleFormValidationError
+import com.shurdev.t_prep.presentation.utils.toResString
 
 @Composable
 fun CreateModuleScreen(
@@ -43,19 +53,21 @@ fun CreateModuleScreen(
         }
     }
 
+    var showFilePicker by remember { mutableStateOf(false) }
+
     DefaultScreenLayout(
         title = stringResource(R.string.create_module),
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         onBackInvoked = onBackInvoked
     ) {
         StickyBottomColumn(
             stickyBottom = {
-                PrimaryButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.create),
-                    onClick = viewModel::submitForm,
+                CreateModuleButtons(
+                    onAddCardClick = viewModel::onAddCard,
+                    onImportClick = { showFilePicker = true },
+                    onSubmitClick = viewModel::submitForm,
                     isLoading = formState is FormSubmittingState,
-                    enabled = formState is EditableState
+                    submitEnabled = formState is EditableState
                 )
             }
         ) {
@@ -63,9 +75,7 @@ fun CreateModuleScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = form.module.name,
                 hint = stringResource(R.string.title),
-                onTextChange = {
-                    viewModel.updateFormData { form -> form.copy(module = form.module.copy(name = it)) }
-                },
+                onTextChange = viewModel::onModuleNameChanged,
                 error = validationError?.nameError?.toErrorString(
                     required = stringResource(R.string.required_field),
                 ),
@@ -77,15 +87,7 @@ fun CreateModuleScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = form.module.description,
                 hint = stringResource(R.string.add_description),
-                onTextChange = {
-                    viewModel.updateFormData { form ->
-                        form.copy(
-                            module = form.module.copy(
-                                description = it
-                            )
-                        )
-                    }
-                },
+                onTextChange = viewModel::onModuleDescriptionChanged,
                 error = validationError?.descriptionError?.toErrorString(
                     required = stringResource(R.string.required_field),
                 ),
@@ -93,26 +95,66 @@ fun CreateModuleScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            CardsCreationList(
-                cards = form.cards,
-                onCardAdd = {
-                    viewModel.updateFormData { form ->
-                        form.copy(cards = form.cards + CardData("", ""))
-                    }
-                },
-                onCardChange = { index, card ->
-                    viewModel.updateFormData { form ->
-                        form.copy(cards = form.cards.mapIndexed { cardIndex, item ->
-                            if (cardIndex == index) card else item
-                        })
-                    }
-                },
-                onCardRemove = { index ->
-                    viewModel.updateFormData { form ->
-                        form.copy(cards = form.cards.filterIndexed { ind, _ -> ind != index })
-                    }
-                }
+            Text(
+                text = stringResource(R.string.access_settings),
+                style = MaterialTheme.typography.titleMedium,
             )
+
+            Spacer(Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                SingleChoiceDialogButton(
+                    modifier = Modifier.padding(16.dp),
+                    title = stringResource(R.string.viewing),
+                    items = AccessLevel.entries,
+                    onItemSelected = viewModel::onViewAccessChange,
+                    itemToString = { it.toResString() },
+                    selectedItem = form.module.viewAccess,
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                SingleChoiceDialogButton(
+                    modifier = Modifier.padding(16.dp),
+                    title = stringResource(R.string.editing),
+                    items = AccessLevel.entries,
+                    onItemSelected = viewModel::onEditAccessChange,
+                    itemToString = { it.toResString() },
+                    selectedItem = form.module.editAccess,
+                )
+
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            FilePicker(show = showFilePicker, fileExtensions = listOf("csv")) { platformFile ->
+                platformFile?.let(viewModel::importCards)
+
+                showFilePicker = false
+            }
+
+            if (form.cards.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.cards),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                CardsCreationList(
+                    cards = form.cards,
+                    onCardChange = viewModel::onCardChange,
+                    onCardRemove = viewModel::onCardRemove,
+                )
+            }
         }
     }
 }

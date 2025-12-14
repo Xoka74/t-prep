@@ -35,7 +35,7 @@ android {
     }
 
     signingConfigs {
-        register("sharedDebug") {
+        register("main") {
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
             storeFile = file(keystoreProperties["storeFile"] as String)
@@ -45,7 +45,7 @@ android {
 
     buildTypes {
         debug {
-            signingConfig = signingConfigs["sharedDebug"]
+            signingConfig = signingConfigs["main"]
         }
         release {
             isMinifyEnabled = false
@@ -53,6 +53,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs["main"]
         }
     }
 
@@ -98,6 +99,15 @@ dependencies {
 
     // Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Logging interceptor
+    implementation(libs.logging.interceptor)
+
+    // FileKit
+    implementation(libs.mpfilepicker)
+
+    // Csv Reader
+    implementation(libs.kotlin.csv)
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)

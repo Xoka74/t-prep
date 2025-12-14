@@ -1,10 +1,13 @@
 package com.shurdev.t_prep.di.modules
 
+import android.app.Application
 import androidx.credentials.CredentialManager
+import com.github.doyaaaaaken.kotlincsv.client.CsvReader
 import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
 import com.shurdev.t_prep.data.api.MeApi
 import com.shurdev.t_prep.data.api.ModulesApi
+import com.shurdev.t_prep.data.api.PushApi
 import com.shurdev.t_prep.data.dataSource.AuthDataSource
 import com.shurdev.t_prep.data.dataSource.SettingsDataSource
 import com.shurdev.t_prep.data.local.dao.ModuleDao
@@ -44,8 +47,12 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideCardRepository(cardsApi: CardsApi): CardRepository {
-        return CardRepositoryImpl(cardsApi)
+    fun provideCardRepository(
+        cardsApi: CardsApi,
+        application: Application,
+        csvReader: CsvReader,
+    ): CardRepository {
+        return CardRepositoryImpl(cardsApi, application, csvReader)
     }
 
     @Provides
@@ -57,12 +64,14 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        authApi: AuthApi,
         authDataSource: AuthDataSource,
+        authApi: AuthApi,
+        pushApi: PushApi,
     ): AuthRepository {
         return AuthRepositoryImpl(
-            authApi = authApi,
             authDataSource = authDataSource,
+            authApi = authApi,
+            pushApi = pushApi,
         )
     }
 

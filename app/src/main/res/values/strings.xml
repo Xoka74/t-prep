@@ -24,4 +24,10 @@
     <string name="question">Вопрос</string>
     <string name="answer">Ответ</string>
     <string name="start_screen">Стартовый экран</string>
+    <string name="all_users">Всем пользователям</string>
+    <string name="only_me">Только мне</string>
+    <string name="viewing">Просмотр</string>
+    <string name="editing">Редактирование</string>
+    <string name="access_settings">Настройки доступа</string>
+    <string name="cards">Карточки</string>
 </resources>
