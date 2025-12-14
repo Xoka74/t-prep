@@ -2,8 +2,9 @@ package com.shurdev.t_prep.data.repositories
 
 import com.shurdev.t_prep.data.api.CardsApi
 import com.shurdev.t_prep.data.mappers.toDomainModel
+import com.shurdev.t_prep.data.models.CardDataDto
+import com.shurdev.t_prep.data.models.CardDto
 import com.shurdev.t_prep.domain.models.Card
-import com.shurdev.t_prep.domain.models.Difficulty
 import com.shurdev.t_prep.domain.repositories.CardRepository
 
 class CardRepositoryImpl(

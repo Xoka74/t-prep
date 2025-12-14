@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.shurdev.t_prep.presentation.screens.cards.CardsScreen
 import com.shurdev.t_prep.presentation.screens.createModule.CreateModuleScreen
 import com.shurdev.t_prep.presentation.screens.home.HomeScreen
 import com.shurdev.t_prep.presentation.screens.login.LoginScreen
@@ -14,6 +15,8 @@ import com.shurdev.t_prep.presentation.screens.quiz.QuizScreen
 import com.shurdev.t_prep.presentation.screens.modules.ModulesScreen
 import com.shurdev.t_prep.presentation.screens.profile.ProfileRoute
 import com.shurdev.t_prep.presentation.screens.settings.SettingsRoute
+import com.shurdev.t_prep.presentation.screens.splash.SplashScreen
+import com.shurdev.t_prep.presentation.screens.test.TestScreen
 
 @Composable
 fun NavGraph(
