@@ -1,4 +1,4 @@
-package com.shurdev.t_prep.presentation.screens.cards
+package com.shurdev.t_prep.presentation.screens.test
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -38,16 +38,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shurdev.t_prep.presentation.components.cards.FlipCard
+import com.shurdev.t_prep.presentation.screens.cards.SlideDirection
 import com.shurdev.t_prep.presentation.screens.cards.viewModel.CardsViewModel
 import com.shurdev.t_prep.presentation.screens.quiz.LoadingView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardsScreen(
+fun TestScreen(
     moduleId: String,
     viewModel: CardsViewModel = hiltViewModel(),
-    onQuizClick: (moduleId: String) -> Unit,
-    onTestClick: (moduleId: String) -> Unit,
     onBack: () -> Unit
 ) {
     val state = viewModel.uiState.value
@@ -60,7 +59,7 @@ fun CardsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Мои карточки") },
+                title = { Text("Тестирование") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -73,64 +72,9 @@ fun CardsScreen(
             state.isLoading -> LoadingView()
             state.error != null -> Text(state.error ?: "")
             else -> {
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 32.dp)
-                            .padding(padding)
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color(144, 202, 249, 255)
-                            ),
-                            onClick = {
-                                onQuizClick(moduleId)
-                            }
-                        ) {
-
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "Повторение"
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color(165, 214, 167, 255)
-                            ),
-                            onClick = {
-                                onTestClick(moduleId)
-                            }
-                        ) {
-
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "Тест"
-                                )
-                            }
-                        }
-                    }
-                }
-
                 Column(
                     modifier = Modifier
+                        .padding(padding)
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -181,8 +125,7 @@ fun CardsScreen(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(
-                                            modifier = Modifier
-                                                .padding(16.dp),
+                                            modifier = Modifier.padding(16.dp),
                                             text = state.currentCard?.question.toString() ?: "",
                                             textAlign = TextAlign.Center
                                         )
@@ -198,9 +141,9 @@ fun CardsScreen(
                                         val correctAnswerIndex =
                                             state.currentCard?.correctAnswer ?: 0
                                         Text(
-                                            modifier = Modifier
-                                                .padding(16.dp),
-                                            text = state.currentCard?.options?.getOrNull(correctAnswerIndex).toString() ?: "",
+                                            modifier = Modifier.padding(16.dp),
+                                            text = state.currentCard?.options?.getOrNull(correctAnswerIndex)
+                                                .toString() ?: "",
                                             textAlign = TextAlign.Center
                                         )
                                     }

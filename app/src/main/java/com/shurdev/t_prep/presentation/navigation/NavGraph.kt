@@ -1,5 +1,6 @@
 package com.shurdev.t_prep.presentation.navigation
 
+import com.shurdev.t_prep.presentation.screens.cards.CardsScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import com.shurdev.t_prep.presentation.screens.quiz.QuizScreen
 import com.shurdev.t_prep.presentation.screens.modules.ModulesScreen
 import com.shurdev.t_prep.presentation.screens.profile.ProfileRoute
 import com.shurdev.t_prep.presentation.screens.settings.SettingsRoute
+import com.shurdev.t_prep.presentation.screens.test.TestScreen
 
 @Composable
 fun NavGraph(
@@ -23,7 +25,9 @@ fun NavGraph(
     NavHost(
         modifier = Modifier.padding(padding),
         navController = navController,
-        startDestination = "login"
+//        startDestination = "login"
+//        startDestination = "quiz/1"
+        startDestination = "cards/1"
     ) {
         composable("login") {
             LoginScreen(
@@ -62,6 +66,28 @@ fun NavGraph(
         composable("settings") {
             SettingsRoute(
                 onDismiss = navController::navigateUp,
+            )
+        }
+
+        composable("cards/{moduleId}") { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
+            CardsScreen(
+                moduleId = moduleId,
+                onBack = navController::navigateUp,
+                onQuizClick = { moduleId ->
+                    navController.navigate("quiz/$moduleId")
+                },
+                onTestClick = { moduleId ->
+                    navController.navigate("test/$moduleId")
+                }
+            )
+        }
+
+        composable("test/{moduleId}") { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
+            TestScreen(
+                moduleId = moduleId,
+                onBack = navController::navigateUp
             )
         }
 

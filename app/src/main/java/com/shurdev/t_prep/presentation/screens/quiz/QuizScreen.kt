@@ -46,7 +46,7 @@ fun QuizScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Тестирование") },
+                title = { Text("Повторение") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -93,7 +93,7 @@ private fun QuizContentView(
                 .padding(vertical = 12.dp),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color(233, 233, 233, 255),
+                containerColor = Color(236, 236, 236, 255),
                 contentColor = Color.Black
             ),
         ) {
@@ -104,7 +104,7 @@ private fun QuizContentView(
                 // Question
                 Text(
                     text = currentCard?.question ?: "",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
