@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
             }
 
             TPrepTheme(
-                darkTheme = isDarkTheme
+                darkTheme = false
             ) {
                 TPrepApp()
             }

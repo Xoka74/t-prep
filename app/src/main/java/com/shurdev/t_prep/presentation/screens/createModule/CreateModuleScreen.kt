@@ -1,6 +1,5 @@
 package com.shurdev.t_prep.presentation.screens.createModule
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,10 +17,12 @@ import com.shurdev.domain.forms.FormSubmittedState
 import com.shurdev.domain.forms.FormSubmittingState
 import com.shurdev.domain.forms.FormValidationErrorState
 import com.shurdev.t_prep.R
+import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
 import com.shurdev.t_prep.presentation.components.layout.StickyBottomColumn
 import com.shurdev.t_prep.presentation.components.textFields.AppTextField
+import com.shurdev.t_prep.presentation.screens.createModule.components.CardsCreationList
 import com.shurdev.t_prep.presentation.screens.createModule.viewModel.CreateModuleViewModel
 import com.shurdev.t_prep.presentation.screens.modules.viewModel.form.ModuleFormValidationError
 
@@ -60,10 +61,10 @@ fun CreateModuleScreen(
         ) {
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
-                text = form.name,
+                text = form.module.name,
                 hint = stringResource(R.string.title),
                 onTextChange = {
-                    viewModel.updateFormData { form -> form.copy(name = it) }
+                    viewModel.updateFormData { form -> form.copy(module = form.module.copy(name = it)) }
                 },
                 error = validationError?.nameError?.toErrorString(
                     required = stringResource(R.string.required_field),
@@ -74,14 +75,43 @@ fun CreateModuleScreen(
 
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
-                text = form.description,
+                text = form.module.description,
                 hint = stringResource(R.string.add_description),
                 onTextChange = {
-                    viewModel.updateFormData { form -> form.copy(description = it) }
+                    viewModel.updateFormData { form ->
+                        form.copy(
+                            module = form.module.copy(
+                                description = it
+                            )
+                        )
+                    }
                 },
                 error = validationError?.descriptionError?.toErrorString(
                     required = stringResource(R.string.required_field),
                 ),
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            CardsCreationList(
+                cards = form.cards,
+                onCardAdd = {
+                    viewModel.updateFormData { form ->
+                        form.copy(cards = form.cards + CardData("", ""))
+                    }
+                },
+                onCardChange = { index, card ->
+                    viewModel.updateFormData { form ->
+                        form.copy(cards = form.cards.mapIndexed { cardIndex, item ->
+                            if (cardIndex == index) card else item
+                        })
+                    }
+                },
+                onCardRemove = { index ->
+                    viewModel.updateFormData { form ->
+                        form.copy(cards = form.cards.filterIndexed { ind, _ -> ind != index })
+                    }
+                }
             )
         }
     }
