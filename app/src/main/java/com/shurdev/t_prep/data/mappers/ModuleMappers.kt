@@ -8,7 +8,7 @@ fun ModuleDto.toDomainModel() : Module {
         id = id.toString(),
         name = name,
         description = description,
-        totalCards = 10,
-        completedCards = 1,
+        totalCards = 0,
+        completedCards = 0,
     )
 }
