@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.shurdev.t_prep.R
 import com.shurdev.t_prep.presentation.components.ErrorView
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
+import com.shurdev.t_prep.presentation.components.layout.RequestNotificationPermissionLauncher
 import com.shurdev.t_prep.presentation.screens.modules.components.ModuleCard
 import com.shurdev.t_prep.presentation.screens.modules.viewModel.ModulesViewModel
 
@@ -39,6 +40,8 @@ fun ModulesScreen(
     onCreateModuleClick: () -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    RequestNotificationPermissionLauncher()
 
     DefaultScreenLayout(
         title = stringResource(R.string.library),
