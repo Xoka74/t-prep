@@ -7,16 +7,17 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ModulesApi {
     @GET("modules")
     suspend fun getUserModules(): ListResponse<ModuleDto>
 
     @GET("modules/{id}")
-    suspend fun getUserModule(id: Int): ModuleDto?
+    suspend fun getUserModule(@Path("id") id: Int): ModuleDto?
 
     @DELETE("modules/{id}")
-    suspend fun deleteUserModule(id: Int)
+    suspend fun deleteUserModule(@Path("id") id: Int)
 
     @POST("modules/")
     suspend fun createModule(@Body data: ModuleData): ModuleDto

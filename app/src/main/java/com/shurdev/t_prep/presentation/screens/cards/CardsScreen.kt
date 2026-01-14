@@ -19,12 +19,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,9 +56,28 @@ fun CardsScreen(
     val state = viewModel.uiState.value
     val cardColor = Color(236, 236, 236, 255)
 
+    var settingsExpanded by remember { mutableStateOf(false) }
+
     DefaultScreenLayout(
         onBackInvoked = onBack,
-        title = "Модуль",
+        title = state.moduleName,
+        actions = {
+            IconButton(onClick = { settingsExpanded = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = "Настройки")
+            }
+
+            DropdownMenu(
+                expanded = settingsExpanded,
+                onDismissRequest = { settingsExpanded = false }
+            ) {
+                SettingsMenuItem(
+                    checked = state.isIntervalRepetitionsEnabled,
+                    onCheckedChange = {
+                        viewModel.onIntervalRepetitionsToggle(it)
+                    }
+                )
+            }
+        }
     ) {
         when {
             state.isLoading -> LoadingView()
@@ -240,4 +268,28 @@ fun CardsScreen(
             }
         }
     }
+}
+
+@Composable
+fun SettingsMenuItem(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    DropdownMenuItem(
+        text = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Интервальные повторения",
+                    modifier = Modifier.weight(1f)
+                )
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = onCheckedChange
+                )
+            }
+        },
+        onClick = { onCheckedChange(!checked) }
+    )
 }

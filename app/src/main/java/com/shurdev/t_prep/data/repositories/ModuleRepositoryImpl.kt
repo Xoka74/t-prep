@@ -19,7 +19,8 @@ class ModuleRepositoryImpl(
     }
 
     override suspend fun getModuleById(id: String): Module? {
-        return modulesApi.getUserModule(id.toInt())?.toDomainModel()
+//        return modulesApi.getUserModule(id.toInt())?.toDomainModel()
+        return getModules().first{ it.id == id }
     }
 
     override suspend fun updateModuleProgress(moduleId: String, completed: Int) {

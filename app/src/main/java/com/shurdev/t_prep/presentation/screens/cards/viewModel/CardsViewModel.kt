@@ -6,6 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.repositories.CardRepository
+import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
+import com.shurdev.t_prep.domain.repositories.ModuleRepository
 import com.shurdev.t_prep.presentation.components.cards.CardFace
 import com.shurdev.t_prep.presentation.screens.cards.CardsState
 import com.shurdev.t_prep.presentation.screens.cards.SlideDirection
@@ -16,6 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CardsViewModel @Inject constructor(
     private val cardRepository: CardRepository,
+    private val moduleRepository: ModuleRepository,
+    private val intervalRepetitionsRepository: IntervalRepetitionsRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -33,11 +37,16 @@ class CardsViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
                 val cards = cardRepository.getCardByModule(moduleId)
+                val moduleName = moduleRepository.getModuleById(moduleId)?.name
+                val isIntervalRepetitionsEnabled = true // TODO
+
                 _uiState.value = _uiState.value.copy(
+                    moduleName = moduleName,
                     cards = cards,
                     currentIndex = 0,
                     cardFace = CardFace.Front,
-                    isLoading = false
+                    isLoading = false,
+                    isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -82,11 +91,14 @@ class CardsViewModel @Inject constructor(
         )
     }
 
-    fun onQuizClicked(){
+    fun onIntervalRepetitionsToggle(isEnabled: Boolean){
+        viewModelScope.launch {
+            intervalRepetitionsRepository.setIsIntervalRepetitionsEnabled(moduleId, isEnabled)
 
-    }
-
-    fun onTestClicked(){
-
+            val isIntervalRepetitionsEnabled = intervalRepetitionsRepository.getIsIntervalRepetitionsEnabled(moduleId)
+            _uiState.value = _uiState.value.copy(
+                isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
+            )
+        }
     }
 }

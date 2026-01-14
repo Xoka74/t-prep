@@ -2,6 +2,7 @@ package com.shurdev.t_prep.di.modules
 
 import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
+import com.shurdev.t_prep.data.api.IntervalRepetitionsApi
 import com.shurdev.t_prep.data.api.MeApi
 import com.shurdev.t_prep.data.api.ModulesApi
 import com.shurdev.t_prep.data.api.PushApi
@@ -37,4 +38,8 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideMeApi(retrofit: Retrofit) = retrofit.create<MeApi>()
+
+    @Provides
+    @Singleton
+    fun provideIntervalRepetitionsApi(retrofit: Retrofit) = retrofit.create<IntervalRepetitionsApi>()
 }

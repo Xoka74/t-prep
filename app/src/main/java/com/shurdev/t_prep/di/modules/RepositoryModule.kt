@@ -1,10 +1,10 @@
 package com.shurdev.t_prep.di.modules
 
 import android.app.Application
-import androidx.credentials.CredentialManager
 import com.github.doyaaaaaken.kotlincsv.client.CsvReader
 import com.shurdev.t_prep.data.api.AuthApi
 import com.shurdev.t_prep.data.api.CardsApi
+import com.shurdev.t_prep.data.api.IntervalRepetitionsApi
 import com.shurdev.t_prep.data.api.MeApi
 import com.shurdev.t_prep.data.api.ModulesApi
 import com.shurdev.t_prep.data.api.PushApi
@@ -13,6 +13,7 @@ import com.shurdev.t_prep.data.dataSource.SettingsDataSource
 import com.shurdev.t_prep.data.local.dao.ModuleDao
 import com.shurdev.t_prep.data.repositories.AuthRepositoryImpl
 import com.shurdev.t_prep.data.repositories.CardRepositoryImpl
+import com.shurdev.t_prep.data.repositories.IntervalRepetitionsRepositoryImpl
 import com.shurdev.t_prep.data.repositories.LogoutRepositoryImpl
 import com.shurdev.t_prep.data.repositories.MeRepository
 import com.shurdev.t_prep.data.repositories.MeRepositoryImpl
@@ -22,6 +23,7 @@ import com.shurdev.t_prep.data.repositories.StudySessionRepositoryImpl
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.repositories.AuthRepository
 import com.shurdev.t_prep.domain.repositories.CardRepository
+import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.repositories.LogoutRepository
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
 import com.shurdev.t_prep.domain.repositories.SettingsRepository
@@ -99,5 +101,11 @@ object RepositoryModule {
         return LogoutRepositoryImpl(
             authDataSource = authDataSource,
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideIntervalRepetitionsRepository(intervalRepetitionsApi: IntervalRepetitionsApi): IntervalRepetitionsRepository {
+        return IntervalRepetitionsRepositoryImpl(intervalRepetitionsApi)
     }
 }
