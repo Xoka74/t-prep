@@ -19,28 +19,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import com.shurdev.t_prep.presentation.components.cards.FlipCard
+import com.shurdev.t_prep.presentation.components.layout.Center
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
 import com.shurdev.t_prep.presentation.screens.cards.viewModel.CardsViewModel
 import com.shurdev.t_prep.presentation.screens.quiz.LoadingView
@@ -51,37 +48,58 @@ fun CardsScreen(
     viewModel: CardsViewModel = hiltViewModel(),
     onQuizClick: (moduleId: String) -> Unit,
     onTestClick: (moduleId: String) -> Unit,
-    onBack: () -> Unit
+    onEditModuleClick: (moduleId: String) -> Unit,
+    onDeleteModuleClick: (moduleId: String) -> Unit,
+    onEditCardClick: (moduleId: String, cardId: String) -> Unit,
+    onDeleteCardClick: (moduleId: String, cardId: String) -> Unit,
+    onBack: () -> Unit,
 ) {
     val state = viewModel.uiState.value
     val cardColor = Color(236, 236, 236, 255)
 
-    var settingsExpanded by remember { mutableStateOf(false) }
+    val hasCards = state.cards.isNotEmpty()
+
+    LaunchedEffect(state) {
+        if (state.isDeleted) {
+            onBack()
+        }
+    }
 
     DefaultScreenLayout(
         onBackInvoked = onBack,
         title = state.moduleName,
         actions = {
-            IconButton(onClick = { settingsExpanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "Настройки")
+            IconButton(onClick = { onDeleteModuleClick(moduleId) }) {
+                Icon(Icons.Default.Delete, contentDescription = "Удалить модуль")
             }
 
-            DropdownMenu(
-                expanded = settingsExpanded,
-                onDismissRequest = { settingsExpanded = false }
-            ) {
-                SettingsMenuItem(
-                    checked = state.isIntervalRepetitionsEnabled,
-                    onCheckedChange = {
-                        viewModel.onIntervalRepetitionsToggle(it)
-                    }
-                )
+            IconButton(onClick = { onEditModuleClick(moduleId) }) {
+                Icon(Icons.Default.Settings, contentDescription = "Настройки")
             }
         }
     ) {
         when {
             state.isLoading -> LoadingView()
-            state.error != null -> Text(state.error ?: "")
+            state.error != null -> Text(state.error)
+            !hasCards -> {
+                Center {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Добавьте карточки на экране редактирования модуля",
+                            textAlign = TextAlign.Center
+                        )
+
+                        PrimaryButton(
+                            text = "Редактировать модуль",
+                            onClick = { onEditModuleClick(moduleId) }
+                        )
+                    }
+                }
+            }
+
             else -> {
                 Column {
                     Row(
@@ -170,9 +188,7 @@ fun CardsScreen(
                             )
                         },
                         label = "Card slide animation"
-                    ) { it ->
-
-                        it.dp
+                    ) {
                         Box(
                             modifier = Modifier.padding(horizontal = 16.dp)
                         ) {
@@ -192,7 +208,7 @@ fun CardsScreen(
                                         Text(
                                             modifier = Modifier
                                                 .padding(16.dp),
-                                            text = state.currentCard?.question.toString() ?: "",
+                                            text = state.currentCard?.question.toString(),
                                             textAlign = TextAlign.Center
                                         )
                                     }
@@ -211,7 +227,7 @@ fun CardsScreen(
                                                 .padding(16.dp),
                                             text = state.currentCard?.options?.getOrNull(
                                                 correctAnswerIndex
-                                            ).toString() ?: "",
+                                            ).toString(),
                                             textAlign = TextAlign.Center
                                         )
                                     }
@@ -264,32 +280,63 @@ fun CardsScreen(
                             }
                         }
                     }
+
+                    Spacer(Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = cardColor
+                            ),
+                            onClick = {
+                                onEditCardClick(
+                                    moduleId,
+                                    state.currentCard?.id ?: "0"
+                                )
+                            },
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Редактировать")
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = cardColor
+                            ),
+                            onClick = {
+                                onDeleteCardClick(
+                                    moduleId,
+                                    state.currentCard?.id ?: "0"
+                                )
+                            }
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Удалить")
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-}
-
-@Composable
-fun SettingsMenuItem(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    DropdownMenuItem(
-        text = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Интервальные повторения",
-                    modifier = Modifier.weight(1f)
-                )
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = onCheckedChange
-                )
-            }
-        },
-        onClick = { onCheckedChange(!checked) }
-    )
 }

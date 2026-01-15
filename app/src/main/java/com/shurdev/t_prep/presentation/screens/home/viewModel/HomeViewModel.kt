@@ -1,4 +1,4 @@
-package com.shurdev.t_prep.presentation.screens.modules.viewModel
+package com.shurdev.t_prep.presentation.screens.home.viewModel
 
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModulesViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val moduleRepository: ModuleRepository,
     private val moduleEventPublisher: ModuleEventPublisher,
-) : BaseViewModel<ModulesState>(
+)  : BaseViewModel<ModulesState>(
     initialState = ModulesState()
 ) {
     init {
@@ -37,7 +37,7 @@ class ModulesViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState { it.copy(isLoading = !pullToRefresh, isPullToRefresh = pullToRefresh) }
             try {
-                val modules = moduleRepository.getUserModules(search)
+                val modules = moduleRepository.getAllModules(search)
                 updateUiState {
                     it.copy(
                         modules = modules,

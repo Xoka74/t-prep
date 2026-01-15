@@ -1,5 +1,7 @@
 package com.shurdev.t_prep.data.models
 
+import com.google.gson.annotations.SerializedName
+import com.shurdev.t_prep.domain.models.AccessLevel
 import com.shurdev.t_prep.domain.models.Card
 
 data class ModuleDto(
@@ -9,5 +11,9 @@ data class ModuleDto(
     val description: String,
     val createdAt: String,
     val updatedAt: String,
+    @SerializedName("ViewAccess")
+    val viewAccess: AccessLevel,
+    @SerializedName("EditAccess")
+    val editAccess: AccessLevel,
     val cards: List<Card>? = null,
 )

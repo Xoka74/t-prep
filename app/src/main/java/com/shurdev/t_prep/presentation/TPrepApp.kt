@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shurdev.t_prep.presentation.components.bottomNavigation.AppBottomNavigation
@@ -18,8 +19,9 @@ import com.shurdev.t_prep.presentation.navigation.NavGraph
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun TPrepApp() {
-    val navController = rememberNavController()
+fun TPrepApp(
+    navController: NavHostController,
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val currentDestination = navBackStackEntry?.destination

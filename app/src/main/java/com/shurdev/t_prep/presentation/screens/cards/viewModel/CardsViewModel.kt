@@ -5,13 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleChangeEvent
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleDeletedEvent
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.repositories.CardRepository
 import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
 import com.shurdev.t_prep.presentation.components.cards.CardFace
 import com.shurdev.t_prep.presentation.screens.cards.CardsState
 import com.shurdev.t_prep.presentation.screens.cards.SlideDirection
+import com.shurdev.t_prep.utils.runSuspendCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +26,7 @@ class CardsViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     private val moduleRepository: ModuleRepository,
     private val intervalRepetitionsRepository: IntervalRepetitionsRepository,
+    private val moduleEventPublisher: ModuleEventPublisher,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -30,6 +37,22 @@ class CardsViewModel @Inject constructor(
 
     init {
         loadCards()
+        subscribeToEvents()
+    }
+
+    fun subscribeToEvents() {
+        viewModelScope.launch {
+            moduleEventPublisher.events
+                .mapNotNull { (it as? ModuleChangeEvent) }
+                .filter { it.moduleId == moduleId }
+                .collect {
+                    if (it is ModuleDeletedEvent) {
+                        _uiState.value = _uiState.value.copy(isDeleted = true)
+                    } else {
+                        loadCards()
+                    }
+                }
+        }
     }
 
     fun loadCards() {
@@ -91,11 +114,12 @@ class CardsViewModel @Inject constructor(
         )
     }
 
-    fun onIntervalRepetitionsToggle(isEnabled: Boolean){
+    fun onIntervalRepetitionsToggle(isEnabled: Boolean) {
         viewModelScope.launch {
             intervalRepetitionsRepository.setIsIntervalRepetitionsEnabled(moduleId, isEnabled)
 
-            val isIntervalRepetitionsEnabled = intervalRepetitionsRepository.getIsIntervalRepetitionsEnabled(moduleId)
+            val isIntervalRepetitionsEnabled =
+                intervalRepetitionsRepository.getIsIntervalRepetitionsEnabled(moduleId)
             _uiState.value = _uiState.value.copy(
                 isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
             )

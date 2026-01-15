@@ -30,4 +30,11 @@
     <string name="editing">Редактирование</string>
     <string name="access_settings">Настройки доступа</string>
     <string name="cards">Карточки</string>
+    <string name="public_modules">Публичные модули</string>
+    <string name="create_card_for_module">Добавить новую карточку для модуля</string>
+    <string name="save">Сохранить</string>
+    <string name="interval_repetition_settings">Настройки интервальных повторений</string>
+    <string name="other">Другое</string>
+    <string name="other_options">Другие возможности</string>
+    <string name="interval_repetitions">Интервальные повторения</string>
 </resources>

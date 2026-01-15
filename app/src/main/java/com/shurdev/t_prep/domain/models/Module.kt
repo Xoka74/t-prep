@@ -5,5 +5,7 @@ data class Module(
     val name: String,
     val description: String,
     val totalCards: Int,
-    val completedCards: Int
+    val completedCards: Int,
+    val viewAccess: AccessLevel,
+    val editAccess: AccessLevel,
 )

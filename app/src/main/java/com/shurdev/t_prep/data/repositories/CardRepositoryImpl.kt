@@ -9,15 +9,21 @@ import com.shurdev.t_prep.data.mappers.toDomainModel
 import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.data.models.CardDto
+import com.shurdev.t_prep.data.models.ModuleData
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardDeletedEvent
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardEditedEvent
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.exceptions.FileReadException
 import com.shurdev.t_prep.domain.exceptions.WrongStructureException
 import com.shurdev.t_prep.domain.models.Card
+import com.shurdev.t_prep.domain.models.Module
 import com.shurdev.t_prep.domain.repositories.CardRepository
 
 class CardRepositoryImpl(
     private val cardsApi: CardsApi,
     private val application: Application,
     private val csvReader: CsvReader,
+    private val moduleEventPublisher: ModuleEventPublisher,
 ) : CardRepository {
     override suspend fun getCardByModule(moduleId: String): List<Card> {
         return cardsApi.getCardsByModuleId(moduleId.toInt()).items.map { it.toDomainModel() }
@@ -49,5 +55,17 @@ class CardRepositoryImpl(
         } finally {
             inputStream.close()
         }
+    }
+
+    override suspend fun editCard(moduleId: Int, cardId: Int, data: CardData) {
+        cardsApi.editCard(moduleId, cardId, data)
+
+        moduleEventPublisher.push(ModuleCardEditedEvent(moduleId.toString(), cardId.toString()))
+    }
+
+    override suspend fun deleteCard(moduleId: Int, cardId: Int) {
+        cardsApi.deleteCard(moduleId, cardId)
+
+        moduleEventPublisher.push(ModuleCardDeletedEvent(moduleId.toString(), cardId.toString()))
     }
 }

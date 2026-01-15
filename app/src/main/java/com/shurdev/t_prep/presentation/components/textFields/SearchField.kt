@@ -30,7 +30,6 @@ fun SearchField(
 
     currentSearchText.useDebounce(
         delayMillis = debounceTimeMillis,
-        coroutineScope = rememberCoroutineScope(),
         onChange = onSearchTextChange
     )
 

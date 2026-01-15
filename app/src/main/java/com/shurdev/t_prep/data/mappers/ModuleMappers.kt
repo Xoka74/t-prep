@@ -8,7 +8,9 @@ fun ModuleDto.toDomainModel() : Module {
         id = id.toString(),
         name = name,
         description = description,
-        totalCards = 0,
-        completedCards = 0,
+        totalCards = 10,
+        completedCards = 5,
+        viewAccess = viewAccess,
+        editAccess = editAccess,
     )
 }

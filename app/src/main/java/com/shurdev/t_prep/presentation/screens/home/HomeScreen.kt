@@ -1,20 +1,28 @@
 package com.shurdev.t_prep.presentation.screens.home
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.shurdev.t_prep.R
-import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
+import com.shurdev.t_prep.presentation.components.screens.ModuleListScreen
+import com.shurdev.t_prep.presentation.screens.home.viewModel.HomeViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    DefaultScreenLayout(
-        title = stringResource(R.string.home),
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text("Пока что пусто")
-    }
+fun HomeScreen(
+    onModuleClick: (String) -> Unit,
+) {
+    val viewModel = hiltViewModel<HomeViewModel>()
+    val state by viewModel.uiState.collectAsState()
+
+    ModuleListScreen(
+        state = state,
+        onModuleClick = onModuleClick,
+        onSearchChange = viewModel::onSearchChange,
+        onLoadModules = viewModel::loadModules,
+        title = stringResource(R.string.public_modules),
+    )
 }

@@ -53,8 +53,9 @@ object RepositoryModule {
         cardsApi: CardsApi,
         application: Application,
         csvReader: CsvReader,
+        moduleEventPublisher: ModuleEventPublisher,
     ): CardRepository {
-        return CardRepositoryImpl(cardsApi, application, csvReader)
+        return CardRepositoryImpl(cardsApi, application, csvReader, moduleEventPublisher)
     }
 
     @Provides
