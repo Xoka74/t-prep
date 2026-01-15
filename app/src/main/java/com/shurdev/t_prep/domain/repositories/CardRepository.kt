@@ -12,6 +12,7 @@ import com.shurdev.t_prep.domain.models.Module
 interface CardRepository {
     suspend fun getCardByModule(moduleId: String): List<Card>
     suspend fun createCard(data: CardDataDto): CardDto
+    suspend fun createCards(moduleId: Int, data: List<CardDataDto>): List<CardDto>
     suspend fun getCardById(moduleId: Int, cardId: Int): CardData?
     suspend fun importCards(file: MPFile<Any>): List<CardData>
 

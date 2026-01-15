@@ -9,14 +9,13 @@ import com.shurdev.t_prep.data.mappers.toDomainModel
 import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.data.models.CardDto
-import com.shurdev.t_prep.data.models.ModuleData
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardDeletedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardEditedEvent
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardsAddedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.exceptions.FileReadException
 import com.shurdev.t_prep.domain.exceptions.WrongStructureException
 import com.shurdev.t_prep.domain.models.Card
-import com.shurdev.t_prep.domain.models.Module
 import com.shurdev.t_prep.domain.repositories.CardRepository
 
 class CardRepositoryImpl(
@@ -31,6 +30,22 @@ class CardRepositoryImpl(
 
     override suspend fun createCard(data: CardDataDto): CardDto {
         return cardsApi.createCard(data.moduleId, CardData(data.question, data.answer))
+    }
+
+    override suspend fun createCards(moduleId: Int, data: List<CardDataDto>): List<CardDto> {
+        val cards =  data.map {
+            createCard(
+                CardDataDto(
+                    it.question,
+                    it.answer,
+                    it.moduleId
+                )
+            )
+        }
+
+        moduleEventPublisher.push(ModuleCardsAddedEvent(moduleId.toString()))
+
+        return cards
     }
 
     override suspend fun getCardById(moduleId: Int, cardId: Int): CardData? {

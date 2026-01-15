@@ -69,7 +69,7 @@ class ModuleSettingsViewModel @Inject constructor(
                     moduleRepository.editModule(moduleId.toInt(), formData.module)
                 }
 
-                updateUiState { FormSubmittedState }
+                updateUiState { FormSubmittedState(Unit) }
             }.onFailure {
                 updateUiState { FormSubmissionErrorState }
             }
@@ -79,7 +79,6 @@ class ModuleSettingsViewModel @Inject constructor(
     fun onModuleNameChanged(value: String) {
         updateFormData { form -> form.copy(module = form.module.copy(name = value)) }
     }
-
 
     fun onModuleDescriptionChanged(value: String) {
         updateFormData { form -> form.copy(module = form.module.copy(description = value)) }

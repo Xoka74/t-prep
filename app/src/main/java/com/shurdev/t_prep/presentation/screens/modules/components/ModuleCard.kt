@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,16 +26,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shurdev.t_prep.R
 import com.shurdev.t_prep.domain.models.Module
+import com.shurdev.t_prep.presentation.utils.toResString
 
 @Composable
 fun ModuleCard(
     module: Module,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showViewAccess: Boolean = true,
 ) {
     var progress = if (module.totalCards > 0) {
         module.cardsToRepeatCount.toFloat() / module.totalCards.toFloat()
@@ -88,15 +93,6 @@ fun ModuleCard(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Предмет",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(32.dp)
-                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -109,10 +105,38 @@ fun ModuleCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            StartButton(
-                progress = progress,
-                onClick = onClick
-            )
+            if (showViewAccess) {
+                Row(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_eye),
+                        contentDescription = null,
+                    )
+
+                    Spacer(Modifier.width(8.dp))
+
+                    Text(
+                        text = module.viewAccess.toResString(),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = null,
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Text(
+                    text = module.editAccess.toResString(),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+            }
         }
     }
 }
@@ -131,13 +155,13 @@ private fun ProgressSection(
         ) {
             Text(
                 text = "Нужно повторить",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Text(
                 text = "$cardsToRepeatCount/$total",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -163,7 +187,7 @@ private fun ProgressSection(
 
         Text(
             text = "${(progress * 100).toInt()}% изучено",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }

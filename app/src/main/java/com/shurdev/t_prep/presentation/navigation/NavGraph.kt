@@ -2,12 +2,14 @@ package com.shurdev.t_prep.presentation.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import com.shurdev.t_prep.presentation.screens.addCards.AddCardsScreen
 import com.shurdev.t_prep.presentation.screens.cards.CardsScreen
 import com.shurdev.t_prep.presentation.screens.createModule.CreateModuleScreen
 import com.shurdev.t_prep.presentation.screens.dialogs.deleteCard.DeleteCardDialog
@@ -27,6 +29,7 @@ import com.shurdev.t_prep.presentation.screens.test.TestScreen
 fun NavGraph(
     padding: PaddingValues,
     navController: NavHostController,
+    snackbarHostState: SnackbarHostState,
 ) {
     NavHost(
         modifier = Modifier.padding(padding),
@@ -56,6 +59,14 @@ fun NavGraph(
         composable("create_module") {
             CreateModuleScreen(
                 onBackInvoked = navController::navigateUp,
+                onModuleCreated = { moduleId ->
+                    navController.navigate("add_cards/$moduleId"){
+                        popUpTo("create_module") {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
@@ -104,6 +115,9 @@ fun NavGraph(
                 onEditCardClick = { moduleId, cardId ->
                     navController.navigate("edit_card/$moduleId/$cardId")
                 },
+                onAddCardsClick = { moduleId ->
+                    navController.navigate("add_cards/$moduleId")
+                }
             )
         }
 
@@ -116,7 +130,7 @@ fun NavGraph(
 
         dialog("delete_card/{moduleId}/{cardId}") {
             DeleteCardDialog(
-                onBack = navController::navigateUp
+                onBack = navController::navigateUp,
             )
         }
 
@@ -128,7 +142,13 @@ fun NavGraph(
 
         composable("edit_module/{moduleId}") {
             ModuleSettingsScreen(
-                onBack = navController::navigateUp
+                onBack = navController::navigateUp,
+            )
+        }
+
+        composable("add_cards/{moduleId}") {
+            AddCardsScreen(
+                onBack = navController::navigateUp,
             )
         }
 
