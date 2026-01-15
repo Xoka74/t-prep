@@ -1,6 +1,6 @@
 package com.shurdev.t_prep.presentation.screens.moduleSettings.form
 
-import com.shurdev.domain.forms.Form
+import com.shurdev.t_prep.domain.forms.Form
 import com.shurdev.domain.forms.ValidationError
 import com.shurdev.t_prep.data.models.ModuleData
 import com.shurdev.t_prep.domain.models.AccessLevel

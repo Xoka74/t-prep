@@ -10,8 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import com.shurdev.t_prep.presentation.screens.cards.CardsScreen
 import com.shurdev.t_prep.presentation.screens.createModule.CreateModuleScreen
-import com.shurdev.t_prep.presentation.screens.dialogs.deleteCardDialog.DeleteCardDialog
-import com.shurdev.t_prep.presentation.screens.dialogs.deleteModuleDialog.DeleteModuleDialog
+import com.shurdev.t_prep.presentation.screens.dialogs.deleteCard.DeleteCardDialog
+import com.shurdev.t_prep.presentation.screens.dialogs.deleteModule.DeleteModuleDialog
+import com.shurdev.t_prep.presentation.screens.dialogs.editCard.EditCardDialog
 import com.shurdev.t_prep.presentation.screens.moduleSettings.ModuleSettingsScreen
 import com.shurdev.t_prep.presentation.screens.home.HomeScreen
 import com.shurdev.t_prep.presentation.screens.login.LoginScreen
@@ -120,7 +121,9 @@ fun NavGraph(
         }
 
         dialog("edit_card/{moduleId}/{cardId}") {
-
+            EditCardDialog(
+                onBack = navController::navigateUp
+            )
         }
 
         composable("edit_module/{moduleId}") {

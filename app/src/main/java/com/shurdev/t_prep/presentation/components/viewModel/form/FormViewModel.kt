@@ -1,10 +1,10 @@
 package com.shurdev.t_prep.presentation.components.viewModel.form
 
-import com.shurdev.domain.forms.Form
-import com.shurdev.domain.forms.FormEditingState
-import com.shurdev.domain.forms.FormState
+import com.shurdev.t_prep.domain.forms.Form
+import com.shurdev.t_prep.domain.forms.FormEditingState
+import com.shurdev.t_prep.domain.forms.FormState
 import com.shurdev.domain.forms.FormValidationError
-import com.shurdev.domain.forms.FormValidationErrorState
+import com.shurdev.t_prep.domain.forms.FormValidationErrorState
 import com.shurdev.t_prep.presentation.components.viewModel.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

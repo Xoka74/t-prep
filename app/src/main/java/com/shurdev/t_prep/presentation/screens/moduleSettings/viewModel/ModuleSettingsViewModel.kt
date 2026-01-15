@@ -2,11 +2,11 @@ package com.shurdev.t_prep.presentation.screens.moduleSettings.viewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.shurdev.domain.forms.FormEditingState
-import com.shurdev.domain.forms.FormPreparationFailedState
-import com.shurdev.domain.forms.FormPreparationState
-import com.shurdev.domain.forms.FormSubmissionErrorState
-import com.shurdev.domain.forms.FormSubmittedState
+import com.shurdev.t_prep.domain.forms.FormEditingState
+import com.shurdev.t_prep.domain.forms.FormPreparationFailedState
+import com.shurdev.t_prep.domain.forms.FormPreparationState
+import com.shurdev.t_prep.domain.forms.FormSubmissionErrorState
+import com.shurdev.t_prep.domain.forms.FormSubmittedState
 import com.shurdev.t_prep.data.models.ModuleData
 import com.shurdev.t_prep.domain.models.AccessLevel
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
@@ -66,7 +66,7 @@ class ModuleSettingsViewModel @Inject constructor(
                     moduleRepository.editModule(moduleId.toInt(), formData.module)
                 }
 
-                updateUiState { FormSubmittedState(Unit) }
+                updateUiState { FormSubmittedState }
             }.onFailure {
                 updateUiState { FormSubmissionErrorState }
             }

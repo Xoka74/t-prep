@@ -33,8 +33,8 @@ class CardRepositoryImpl(
         return cardsApi.createCard(data.moduleId, CardData(data.question, data.answer))
     }
 
-    override suspend fun getCardById(moduleId: Int, cardId: Int): Card? {
-        return cardsApi.getCardById(moduleId, cardId)?.toDomainModel()
+    override suspend fun getCardById(moduleId: Int, cardId: Int): CardData? {
+        return cardsApi.getCardById(moduleId, cardId)
     }
 
     override suspend fun importCards(file: MPFile<Any>): List<CardData> {

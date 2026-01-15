@@ -2,8 +2,8 @@ package com.shurdev.t_prep.presentation.screens.createModule.viewModel
 
 import androidx.lifecycle.viewModelScope
 import com.darkrockstudios.libraries.mpfilepicker.MPFile
-import com.shurdev.domain.forms.FormSubmissionErrorState
-import com.shurdev.domain.forms.FormSubmittedState
+import com.shurdev.t_prep.domain.forms.FormSubmissionErrorState
+import com.shurdev.t_prep.domain.forms.FormSubmittedState
 import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.domain.models.AccessLevel
@@ -39,7 +39,7 @@ class   CreateModuleViewModel @Inject constructor(
                     )
                 }
 
-                updateUiState { FormSubmittedState(Unit) }
+                updateUiState { FormSubmittedState }
             }.onFailure {
                 updateUiState { FormSubmissionErrorState }
             }

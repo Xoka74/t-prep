@@ -1,4 +1,6 @@
-package com.shurdev.domain.forms
+package com.shurdev.t_prep.domain.forms
+
+import com.shurdev.domain.forms.FormValidationError
 
 sealed interface FormState
 
@@ -15,6 +17,6 @@ data object FormEditingState : FormState, EditableState
 
 data object FormSubmittingState : FormState
 
-data class FormSubmittedState<T>(val data: T) : FormState
+data object FormSubmittedState : FormState
 
 data object FormSubmissionErrorState : FormState, EditableState

@@ -1,6 +1,7 @@
 package com.shurdev.t_prep.data.api
 
 import com.shurdev.t_prep.data.models.CardData
+import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.data.models.CardDto
 import com.shurdev.t_prep.data.models.ListResponse
 import retrofit2.http.Body
@@ -15,7 +16,7 @@ interface CardsApi {
     suspend fun getCardById(
         @Path("moduleId") moduleId: Int,
         @Path("cardId") cardId: Int,
-    ): CardDto?
+    ): CardData?
 
     @GET("modules/{moduleId}/cards")
     suspend fun getCardsByModuleId(@Path("moduleId") moduleId: Int): ListResponse<CardDto>

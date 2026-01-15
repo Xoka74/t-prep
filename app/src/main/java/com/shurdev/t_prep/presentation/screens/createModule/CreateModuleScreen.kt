@@ -20,10 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
-import com.shurdev.domain.forms.EditableState
-import com.shurdev.domain.forms.FormSubmittedState
-import com.shurdev.domain.forms.FormSubmittingState
-import com.shurdev.domain.forms.FormValidationErrorState
+import com.shurdev.t_prep.domain.forms.EditableState
+import com.shurdev.t_prep.domain.forms.FormSubmittedState
+import com.shurdev.t_prep.domain.forms.FormSubmittingState
+import com.shurdev.t_prep.domain.forms.FormValidationErrorState
 import com.shurdev.t_prep.R
 import com.shurdev.t_prep.domain.models.AccessLevel
 import com.shurdev.t_prep.presentation.components.buttons.SingleChoiceDialogButton
@@ -48,7 +48,7 @@ fun CreateModuleScreen(
         (formState as? FormValidationErrorState<*>)?.error as? ModuleFormValidationError
 
     LaunchedEffect(formState) {
-        if (formState is FormSubmittedState<*>) {
+        if (formState is FormSubmittedState) {
             onBackInvoked()
         }
     }
