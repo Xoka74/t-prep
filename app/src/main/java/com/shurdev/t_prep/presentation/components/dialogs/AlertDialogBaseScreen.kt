@@ -17,8 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.shurdev.t_prep.R
 import com.shurdev.t_prep.presentation.components.viewModel.alertDialog.AlertDialogDoneState
 import com.shurdev.t_prep.presentation.components.viewModel.alertDialog.AlertDialogErrorState
 import com.shurdev.t_prep.presentation.components.viewModel.alertDialog.AlertDialogLoadingState
@@ -64,7 +66,8 @@ fun AlertDialogBaseScreen(
 
                     Text(
                         text = text,
-                        textAlign = TextAlign.Center
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -75,14 +78,20 @@ fun AlertDialogBaseScreen(
                 TextButton(onClick = {
                     viewModel.onConfirm()
                 }) {
-                    Text("Подтвердить")
+                    Text(
+                        text = stringResource(R.string.confirm),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
                 }
             }
         },
         dismissButton = {
             if (!inProgress) {
                 TextButton(onClick = onDismissRequest) {
-                    Text("Отменить")
+                    Text(
+                        text = stringResource(R.string.cancel),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
                 }
             }
         }

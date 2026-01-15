@@ -37,4 +37,6 @@
     <string name="other">Другое</string>
     <string name="other_options">Другие возможности</string>
     <string name="interval_repetitions">Интервальные повторения</string>
+    <string name="enter_text">Введите текст...</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -72,10 +75,11 @@ fun EditCardDialog(
                         AppTextField(
                             modifier = Modifier.fillMaxWidth(),
                             text = cardData.question,
-                            hint = stringResource(R.string.question),
+                            hint = stringResource(R.string.enter_text),
                             error = validationError?.questionError?.toErrorString(
                                 required = stringResource(R.string.required_field),
                             ),
+                            label = "Вопрос",
                             onTextChange = viewModel::onQuestionChange,
                         )
 
@@ -84,10 +88,11 @@ fun EditCardDialog(
                         AppTextField(
                             modifier = Modifier.fillMaxWidth(),
                             text = cardData.answer,
-                            hint = stringResource(R.string.answer),
+                            hint = stringResource(R.string.enter_text),
                             error = validationError?.answerError?.toErrorString(
                                 required = stringResource(R.string.required_field),
                             ),
+                            label = "Ответ",
                             onTextChange = viewModel::onAnswerChange,
                         )
 
