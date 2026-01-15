@@ -1,6 +1,7 @@
 package com.shurdev.t_prep.di.modules
 
 import com.shurdev.t_prep.domain.repositories.CardRepository
+import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.repositories.StudySessionRepository
 import com.shurdev.t_prep.domain.usecases.SaveSessionUseCase
 import com.shurdev.t_prep.domain.usecases.StartQuizUseCase
@@ -15,8 +16,11 @@ import javax.inject.Singleton
 object UseCaseModule {
     @Provides
     @Singleton
-    fun provideStartQuizUseCase(repository: CardRepository): StartQuizUseCase {
-        return StartQuizUseCase(repository)
+    fun provideStartQuizUseCase(
+        cardRepository: CardRepository,
+        intervalRepetitionsRepository: IntervalRepetitionsRepository
+    ): StartQuizUseCase {
+        return StartQuizUseCase(cardRepository, intervalRepetitionsRepository)
     }
 
     @Provides

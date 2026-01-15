@@ -13,6 +13,7 @@ data class ModuleForm(
         viewAccess = AccessLevel.AllUsers,
         editAccess = AccessLevel.AllUsers,
         passwordHash = "string",
+        isIntervalRepetitionsEnabled = false
     ),
     val cards: List<CardData> = listOf()
 ) : Form<ModuleFormValidationError>() {

@@ -58,7 +58,7 @@ fun QuizScreen(
         when {
             state.isLoading -> LoadingView()
             state.showResults -> ResultsView(state, onBack)
-            else -> QuizContentView(state, viewModel, padding)
+            else -> QuizContentView(state, viewModel, padding, moduleId)
         }
     }
 }
@@ -67,7 +67,8 @@ fun QuizScreen(
 private fun QuizContentView(
     state: QuizState,
     viewModel: QuizViewModel,
-    padding: PaddingValues
+    padding: PaddingValues,
+    moduleId: String,
 ) {
     val currentCard = state.currentCard
 
@@ -117,7 +118,7 @@ private fun QuizContentView(
                         isSelected = state.selectedAnswer == index,
                         isCorrect = state.isAnswerCorrect == true && index == currentCard.correctAnswer,
                         isWrong = state.isAnswerCorrect == false && state.selectedAnswer == index,
-                        onClick = { viewModel.selectAnswer(index) }
+                        onClick = { viewModel.selectAnswer(moduleId, index) }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }

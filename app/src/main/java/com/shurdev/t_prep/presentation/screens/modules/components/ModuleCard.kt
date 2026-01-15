@@ -37,11 +37,13 @@ fun ModuleCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val progress = if (module.totalCards > 0) {
-        module.completedCards.toFloat() / module.totalCards.toFloat()
+    var progress = if (module.totalCards > 0) {
+        module.cardsToRepeatCount.toFloat() / module.totalCards.toFloat()
     } else {
         0f
     }
+
+    progress = 1 - progress
 
     Card(
         onClick = onClick,
@@ -101,7 +103,7 @@ fun ModuleCard(
 
             ProgressSection(
                 progress = progress,
-                completed = module.completedCards,
+                cardsToRepeatCount = module.cardsToRepeatCount,
                 total = module.totalCards
             )
 
@@ -118,7 +120,7 @@ fun ModuleCard(
 @Composable
 private fun ProgressSection(
     progress: Float,
-    completed: Int,
+    cardsToRepeatCount: Int,
     total: Int,
     modifier: Modifier = Modifier
 ) {
@@ -128,13 +130,13 @@ private fun ProgressSection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Прогресс",
+                text = "Нужно повторить",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Text(
-                text = "$completed/$total",
+                text = "$cardsToRepeatCount/$total",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary
@@ -160,7 +162,7 @@ private fun ProgressSection(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "${(progress * 100).toInt()}% выполнено",
+            text = "${(progress * 100).toInt()}% изучено",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

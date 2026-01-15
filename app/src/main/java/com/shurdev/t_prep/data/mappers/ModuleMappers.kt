@@ -8,9 +8,11 @@ fun ModuleDto.toDomainModel() : Module {
         id = id.toString(),
         name = name,
         description = description,
-        totalCards = 10,
+        totalCards = totalCards,
         completedCards = 5,
         viewAccess = viewAccess,
         editAccess = editAccess,
+        cardsToRepeatCount = cardsToRepeatCount,
+        isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
     )
 }

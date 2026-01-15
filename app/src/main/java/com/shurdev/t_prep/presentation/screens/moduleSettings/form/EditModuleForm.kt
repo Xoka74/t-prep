@@ -13,6 +13,7 @@ data class EditModuleForm(
         viewAccess = AccessLevel.AllUsers,
         editAccess = AccessLevel.AllUsers,
         passwordHash = "string",
+        isIntervalRepetitionsEnabled = false
     ),
     val module: ModuleData = ModuleData(
         name = "",
@@ -20,6 +21,7 @@ data class EditModuleForm(
         viewAccess = AccessLevel.AllUsers,
         editAccess = AccessLevel.AllUsers,
         passwordHash = "string",
+        isIntervalRepetitionsEnabled = false
     ),
 ) : Form<ModuleFormValidationError>() {
     override fun validate(): ModuleFormValidationError? {

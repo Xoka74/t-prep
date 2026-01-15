@@ -8,4 +8,6 @@ data class Module(
     val completedCards: Int,
     val viewAccess: AccessLevel,
     val editAccess: AccessLevel,
+    val isIntervalRepetitionsEnabled: Boolean,
+    val cardsToRepeatCount: Int
 )

@@ -59,13 +59,21 @@ class CardsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                val cards = cardRepository.getCardByModule(moduleId)
-                val moduleName = moduleRepository.getModuleById(moduleId)?.name
-                val isIntervalRepetitionsEnabled = true // TODO
+                var intervalRepetitionCards =
+                    intervalRepetitionsRepository.getCardsForRepetition(moduleId)
+
+                if (intervalRepetitionCards.isEmpty()) {
+                    intervalRepetitionCards = cardRepository.getCardByModule(moduleId)
+                }
+//                val cards = cardRepository.getCardByModule(moduleId)
+
+                val module = moduleRepository.getModuleById(moduleId)
+                val moduleName = module?.name
+                val isIntervalRepetitionsEnabled = module?.isIntervalRepetitionsEnabled ?: false
 
                 _uiState.value = _uiState.value.copy(
                     moduleName = moduleName,
-                    cards = cards,
+                    cards = intervalRepetitionCards,
                     currentIndex = 0,
                     cardFace = CardFace.Front,
                     isLoading = false,
@@ -112,17 +120,5 @@ class CardsViewModel @Inject constructor(
             cardFace = CardFace.Front,
             slideDirection = SlideDirection.Backward
         )
-    }
-
-    fun onIntervalRepetitionsToggle(isEnabled: Boolean) {
-        viewModelScope.launch {
-            intervalRepetitionsRepository.setIsIntervalRepetitionsEnabled(moduleId, isEnabled)
-
-            val isIntervalRepetitionsEnabled =
-                intervalRepetitionsRepository.getIsIntervalRepetitionsEnabled(moduleId)
-            _uiState.value = _uiState.value.copy(
-                isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
-            )
-        }
     }
 }

@@ -2,6 +2,8 @@ package com.shurdev.t_prep.data.api
 
 import com.shurdev.t_prep.data.models.CardDto
 import com.shurdev.t_prep.data.models.ListResponse
+import com.shurdev.t_prep.data.models.UpdateCardData
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,12 +14,12 @@ interface IntervalRepetitionsApi {
     @GET("modules/{moduleId}/interval-repetitions")
     suspend fun getCardsForRepetition(
         @Path("moduleId") moduleId: Int,
-    ): ListResponse<CardDto>? // TODO не уверен что будет работать. Т.к. в json-е с бэка немного другие имена
+    ): ListResponse<CardDto>?
 
-    @GET("modules/{moduleId}/interval-repetitions") // TODO поменять когда добавят ручку
+    /*@GET("modules/{moduleId}/interval-repetitions") // TODO поменять когда добавят ручку
     suspend fun getIsIntervalRepetitionsEnabled(
         @Path("moduleId") moduleId: Int,
-    ): Boolean?
+    ): Boolean?*/
 
     @POST("modules/{moduleId}/interval-repetitions")
     suspend fun enableIntervalRepetitions(
@@ -27,5 +29,12 @@ interface IntervalRepetitionsApi {
     @DELETE("modules/{moduleId}/interval-repetitions")
     suspend fun disableIntervalRepetitions(
         @Path("moduleId") moduleId: Int,
+    )
+
+    @POST("modules/{moduleId}/interval-repetitions/{cardId}")
+    suspend fun updateCardStatus(
+        @Path("moduleId") moduleId: Int,
+        @Path("cardId") cardId: Int,
+        @Body updateCardData: UpdateCardData
     )
 }

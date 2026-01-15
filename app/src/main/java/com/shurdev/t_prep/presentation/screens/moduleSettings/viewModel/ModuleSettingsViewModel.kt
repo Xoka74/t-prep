@@ -9,6 +9,7 @@ import com.shurdev.t_prep.domain.forms.FormSubmissionErrorState
 import com.shurdev.t_prep.domain.forms.FormSubmittedState
 import com.shurdev.t_prep.data.models.ModuleData
 import com.shurdev.t_prep.domain.models.AccessLevel
+import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
 import com.shurdev.t_prep.presentation.components.viewModel.form.FormViewModel
 import com.shurdev.t_prep.presentation.screens.moduleSettings.form.EditModuleForm
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ModuleSettingsViewModel @Inject constructor(
     private val moduleRepository: ModuleRepository,
+    private val intervalRepetitionsRepository: IntervalRepetitionsRepository,
     savedStateHandle: SavedStateHandle,
 ) : FormViewModel<ModuleFormValidationError, EditModuleForm>(
     initialData = EditModuleForm()
@@ -44,7 +46,8 @@ class ModuleSettingsViewModel @Inject constructor(
                 description = module.description,
                 viewAccess = module.viewAccess,
                 editAccess = module.editAccess,
-                passwordHash = formData.module.passwordHash
+                passwordHash = formData.module.passwordHash,
+                isIntervalRepetitionsEnabled = module.isIntervalRepetitionsEnabled
             )
             updateFormData {
                 EditModuleForm(
@@ -88,5 +91,12 @@ class ModuleSettingsViewModel @Inject constructor(
 
     fun onEditAccessChange(value: AccessLevel) {
         updateFormData { form -> form.copy(module = form.module.copy(editAccess = value)) }
+    }
+
+    fun onIntervalRepetitionsToggle(isEnabled: Boolean) {
+        viewModelScope.launch {
+            intervalRepetitionsRepository.setIsIntervalRepetitionsEnabled(moduleId, isEnabled)
+            updateFormData { form -> form.copy(module = form.module.copy(isIntervalRepetitionsEnabled = isEnabled)) }
+        }
     }
 }

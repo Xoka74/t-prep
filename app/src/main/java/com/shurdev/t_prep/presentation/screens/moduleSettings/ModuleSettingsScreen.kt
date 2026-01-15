@@ -153,8 +153,10 @@ fun ModuleSettingsScreen(
                     )
                     Spacer(Modifier.weight(1f))
                     Switch(
-                        checked = true,
-                        onCheckedChange = {}
+                        checked = form.module.isIntervalRepetitionsEnabled,
+                        onCheckedChange = {
+                            viewModel.onIntervalRepetitionsToggle(it)
+                        }
                     )
                 }
             }

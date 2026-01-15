@@ -5,18 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shurdev.t_prep.domain.models.StudySession
+import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.usecases.SaveSessionUseCase
 import com.shurdev.t_prep.domain.usecases.StartQuizUseCase
 import com.shurdev.t_prep.presentation.screens.quiz.QuizState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
     private val startQuizUseCase: StartQuizUseCase,
-    private val saveSessionUseCase: SaveSessionUseCase
+    private val saveSessionUseCase: SaveSessionUseCase,
+    private val intervalRepetitionsRepository: IntervalRepetitionsRepository,
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(QuizState())
@@ -42,18 +45,23 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun selectAnswer(selectedIndex: Int) {
+    fun selectAnswer(moduleId: String, selectedIndex: Int) {
         val currentState = _uiState.value
         val currentCard = currentState.cards[currentState.currentCardIndex]
 
         val isCorrect = selectedIndex == currentCard.correctAnswer
         val updatedScore = if (isCorrect) currentState.score + 1 else currentState.score
 
-        _uiState.value = currentState.copy(
-            selectedAnswer = selectedIndex,
-            isAnswerCorrect = isCorrect,
-            score = updatedScore
-        )
+        viewModelScope.launch {
+            val answerDateTime = Date()
+            intervalRepetitionsRepository.updateCardStatus(moduleId, currentCard.id, answerDateTime, isCorrect)
+
+            _uiState.value = currentState.copy(
+                selectedAnswer = selectedIndex,
+                isAnswerCorrect = isCorrect,
+                score = updatedScore
+            )
+        }
     }
 
     fun nextCard() {
