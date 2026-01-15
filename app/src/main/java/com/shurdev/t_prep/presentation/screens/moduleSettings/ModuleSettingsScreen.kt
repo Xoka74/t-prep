@@ -48,7 +48,7 @@ fun ModuleSettingsScreen(
     val typography = MaterialTheme.typography
 
     LaunchedEffect(formState) {
-        if (formState is FormSubmittedState) {
+        if (formState is FormSubmittedState<*>) {
             onBack()
         }
     }

@@ -17,6 +17,6 @@ data object FormEditingState : FormState, EditableState
 
 data object FormSubmittingState : FormState
 
-data object FormSubmittedState : FormState
+data class FormSubmittedState<T>(val data: T): FormState
 
 data object FormSubmissionErrorState : FormState, EditableState

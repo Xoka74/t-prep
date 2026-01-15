@@ -3,6 +3,8 @@ package com.shurdev.t_prep.presentation
 import android.annotation.SuppressLint
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -11,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.shurdev.t_prep.presentation.components.bottomNavigation.AppBottomNavigation
 import com.shurdev.t_prep.presentation.components.bottomNavigation.BottomNavigationItem
 import com.shurdev.t_prep.presentation.components.viewModel.AuthViewModel
@@ -42,7 +43,10 @@ fun TPrepApp(
 
     val isAuthorizedState by authViewModel.isAuthenticated.collectAsState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
         bottomBar = {
             if (selectedDestination != null) {
                 BottomAppBar {
@@ -66,7 +70,8 @@ fun TPrepApp(
     ) { padding ->
         NavGraph(
             padding = padding,
-            navController = navController
+            navController = navController,
+            snackbarHostState = snackbarHostState,
         )
 
         LaunchedEffect(isAuthorizedState) {

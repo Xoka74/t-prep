@@ -16,6 +16,7 @@ import com.shurdev.t_prep.presentation.screens.dialogs.editCard.viewModel.form.E
 import com.shurdev.t_prep.presentation.screens.dialogs.editCard.viewModel.form.EditCardValidationError
 import com.shurdev.t_prep.utils.runSuspendCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,7 +73,7 @@ class EditCardViewModel @Inject constructor(
                 if (formData.cardData != formData.initialCardData) {
                     cardRepository.editCard(moduleId.toInt(), cardId.toInt(), formData.cardData)
                 }
-                updateUiState { FormSubmittedState }
+                updateUiState { FormSubmittedState(Unit) }
             }.onFailure {
                 updateUiState { FormSubmissionErrorState }
             }

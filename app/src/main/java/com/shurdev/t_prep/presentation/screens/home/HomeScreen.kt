@@ -23,6 +23,7 @@ fun HomeScreen(
         onModuleClick = onModuleClick,
         onSearchChange = viewModel::onSearchChange,
         onLoadModules = viewModel::loadModules,
+        showViewAccess = false,
         title = stringResource(R.string.public_modules),
     )
 }

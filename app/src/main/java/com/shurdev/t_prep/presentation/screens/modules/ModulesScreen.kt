@@ -34,7 +34,7 @@ fun ModulesScreen(
         onModuleClick = onModuleClick,
         onSearchChange = viewModel::onSearchChange,
         onLoadModules = viewModel::loadModules,
-        title = stringResource(R.string.public_modules),
+        title = stringResource(R.string.library),
         fab = {
             FloatingActionButton(
                 modifier = Modifier.padding(10.dp),

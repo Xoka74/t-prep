@@ -1,5 +1,7 @@
 package com.shurdev.t_prep.presentation.screens.modules.components
 
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.modifier.ModifierLocalMap
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +44,8 @@ import com.shurdev.t_prep.presentation.utils.toResString
 fun ModuleCard(
     module: Module,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showViewAccess: Boolean = true,
 ) {
     val progress = if (module.totalCards > 0) {
         module.completedCards.toFloat() / module.totalCards.toFloat()
@@ -103,24 +108,26 @@ fun ModuleCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            if (showViewAccess) {
+                Row(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_eye),
+                        contentDescription = null,
+                    )
 
-            Row {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_eye),
-                    contentDescription = null,
-                )
+                    Spacer(Modifier.width(8.dp))
 
-                Spacer(Modifier.width(8.dp))
-
-                Text(
-                    text = module.viewAccess.toResString(),
-                    style = MaterialTheme.typography.titleSmall,
-                )
+                    Text(
+                        text = module.viewAccess.toResString(),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = null,

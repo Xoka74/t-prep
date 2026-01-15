@@ -36,7 +36,7 @@ fun CreateModuleButtons(
 
         PrimaryButton(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.create),
+            text = stringResource(R.string.save),
             onClick = onSubmitClick,
             isLoading = isLoading,
             enabled = submitEnabled

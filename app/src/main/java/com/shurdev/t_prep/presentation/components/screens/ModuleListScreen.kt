@@ -37,6 +37,7 @@ fun ModuleListScreen(
     onLoadModules: (String, Boolean) -> Unit,
     title: String,
     fab: (@Composable () -> Unit)? = null,
+    showViewAccess: Boolean = true,
 ) {
     var search by remember { mutableStateOf("") }
 
@@ -94,6 +95,7 @@ fun ModuleListScreen(
                                     items(state.modules) { module ->
                                         ModuleCard(
                                             module = module,
+                                            showViewAccess = showViewAccess,
                                             onClick = { onModuleClick(module.id) }
                                         )
                                     }

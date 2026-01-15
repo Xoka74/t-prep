@@ -9,7 +9,7 @@ import com.shurdev.t_prep.domain.models.AccessLevel
 fun AccessLevel.toResString(): String {
     val id = when (this) {
         AccessLevel.AllUsers -> R.string.all_users
-        AccessLevel.OnlyMe -> R.string.only_me
+        AccessLevel.OnlyMe -> R.string.only_creator
     }
 
     return stringResource(id)

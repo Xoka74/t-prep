@@ -52,6 +52,7 @@ fun CardsScreen(
     onDeleteModuleClick: (moduleId: String) -> Unit,
     onEditCardClick: (moduleId: String, cardId: String) -> Unit,
     onDeleteCardClick: (moduleId: String, cardId: String) -> Unit,
+    onAddCardsClick: (moduleId: String) -> Unit,
     onBack: () -> Unit,
 ) {
     val state = viewModel.uiState.value
@@ -88,13 +89,15 @@ fun CardsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Добавьте карточки на экране редактирования модуля",
+                            text = "У модуля отсутствуют карточки",
                             textAlign = TextAlign.Center
                         )
 
+                        Spacer(Modifier.height(8.dp))
+
                         PrimaryButton(
-                            text = "Редактировать модуль",
-                            onClick = { onEditModuleClick(moduleId) }
+                            text = "Добавить карточки",
+                            onClick = { onAddCardsClick(moduleId) }
                         )
                     }
                 }
