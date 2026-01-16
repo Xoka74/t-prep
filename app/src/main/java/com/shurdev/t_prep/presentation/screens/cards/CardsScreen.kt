@@ -106,256 +106,258 @@ fun CardsScreen(
 
             else -> {
                 Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 32.dp)
-                    ) {
-                        Card(
+                    Column {
+                        Row(
                             modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color(144, 202, 249, 255)
-                            ),
-                            onClick = {
-                                onQuizClick(moduleId)
-                            }
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
                         ) {
-
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "Повторение"
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color(165, 214, 167, 255)
-                            ),
-                            onClick = {
-                                onTestClick(moduleId)
-                            }
-                        ) {
-
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "Тест"
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        text = "${state.currentIndex + 1} / ${state.cards.size}",
-                        style = MaterialTheme.typography.headlineMedium,
-                        textAlign = TextAlign.Center
-                    )
-
-                    AnimatedContent(
-                        targetState = state.currentIndex,
-                        transitionSpec = {
-                            val direction = if (state.slideDirection == SlideDirection.Forward) {
-                                AnimatedContentTransitionScope.SlideDirection.Left
-                            } else {
-                                AnimatedContentTransitionScope.SlideDirection.Right
-                            }
-
-                            slideIntoContainer(
-                                towards = direction,
-                                animationSpec = tween(300)
-                            ) togetherWith slideOutOfContainer(
-                                towards = direction,
-                                animationSpec = tween(300)
-                            )
-                        },
-                        label = "Card slide animation"
-                    ) {
-                        Box(
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        ) {
-                            FlipCard(
-                                cardFace = state.cardFace,
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color(144, 202, 249, 255)
+                                ),
                                 onClick = {
-                                    viewModel.flipCard()
-                                },
-                                modifier = Modifier.aspectRatio(1f),
-                                front = {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(cardColor),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            modifier = Modifier
-                                                .padding(16.dp),
-                                            text = state.currentCard?.question.toString(),
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
-                                },
-                                back = {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(cardColor),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        val correctAnswerIndex =
-                                            state.currentCard?.correctAnswer ?: 0
-                                        Text(
-                                            modifier = Modifier
-                                                .padding(16.dp),
-                                            text = state.currentCard?.options?.getOrNull(
-                                                correctAnswerIndex
-                                            ).toString(),
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
+                                    onQuizClick(moduleId)
                                 }
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = cardColor
-                            ),
-                            onClick = viewModel::prevCard
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
                             ) {
-                                Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "Повторение"
+                                    )
+                                }
                             }
-                        }
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(16.dp))
 
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = cardColor
-                            ),
-                            onClick = viewModel::nextCard
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color(165, 214, 167, 255)
+                                ),
+                                onClick = {
+                                    onTestClick(moduleId)
+                                }
                             ) {
-                                Icon(Icons.AutoMirrored.Filled.ArrowForward, null)
+
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "Тест"
+                                    )
+                                }
                             }
                         }
                     }
 
-                    Spacer(Modifier.height(16.dp))
-
-                    Row(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.Center
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Card(
+                        Text(
                             modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = cardColor
-                            ),
-                            onClick = {
-                                onEditCardClick(
-                                    moduleId,
-                                    state.currentCard?.id ?: "0"
+                                .fillMaxWidth(),
+                            text = "${state.currentIndex + 1} / ${state.cards.size}",
+                            style = MaterialTheme.typography.headlineMedium,
+                            textAlign = TextAlign.Center
+                        )
+
+                        AnimatedContent(
+                            targetState = state.currentIndex,
+                            transitionSpec = {
+                                val direction =
+                                    if (state.slideDirection == SlideDirection.Forward) {
+                                        AnimatedContentTransitionScope.SlideDirection.Left
+                                    } else {
+                                        AnimatedContentTransitionScope.SlideDirection.Right
+                                    }
+
+                                slideIntoContainer(
+                                    towards = direction,
+                                    animationSpec = tween(300)
+                                ) togetherWith slideOutOfContainer(
+                                    towards = direction,
+                                    animationSpec = tween(300)
                                 )
                             },
+                            label = "Card slide animation"
                         ) {
                             Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
+                                modifier = Modifier.padding(horizontal = 16.dp)
                             ) {
-                                Text("Редактировать")
+                                FlipCard(
+                                    cardFace = state.cardFace,
+                                    onClick = {
+                                        viewModel.flipCard()
+                                    },
+                                    modifier = Modifier.aspectRatio(1f),
+                                    front = {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .background(cardColor),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                modifier = Modifier
+                                                    .padding(16.dp),
+                                                text = state.currentCard?.question.toString(),
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                    },
+                                    back = {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .background(cardColor),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            val correctAnswerIndex =
+                                                state.currentCard?.correctAnswer ?: 0
+                                            Text(
+                                                modifier = Modifier
+                                                    .padding(16.dp),
+                                                text = state.currentCard?.options?.getOrNull(
+                                                    correctAnswerIndex
+                                                ).toString(),
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                    }
+                                )
                             }
                         }
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = cardColor
+                                ),
+                                onClick = viewModel::prevCard
+                            ) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.width(16.dp))
+
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = cardColor
+                                ),
+                                onClick = viewModel::nextCard
+                            ) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.ArrowForward, null)
+                                }
+                            }
+                        }
+
+                        Spacer(Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = cardColor
+                                ),
+                                onClick = {
+                                    onEditCardClick(
+                                        moduleId,
+                                        state.currentCard?.id ?: "0"
+                                    )
+                                },
+                            ) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text("Редактировать")
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.width(16.dp))
+
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = cardColor
+                                ),
+                                onClick = {
+                                    onDeleteCardClick(
+                                        moduleId,
+                                        state.currentCard?.id ?: "0"
+                                    )
+                                }
+                            ) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text("Удалить")
+                                }
+                            }
+                        }
+
+                        Spacer(Modifier.height(16.dp))
 
                         Card(
                             modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
+                                .height(56.dp)
+                                .padding(horizontal = 16.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = cardColor
                             ),
-                            onClick = {
-                                onDeleteCardClick(
-                                    moduleId,
-                                    state.currentCard?.id ?: "0"
-                                )
-                            }
+                            onClick = { onAddCardClick(moduleId) }
                         ) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("Удалить")
+                                Text("Добавить карточку")
                             }
-                        }
-                    }
-
-                    Spacer(Modifier.height(16.dp))
-
-                    Card(
-                        modifier = Modifier
-                            .height(56.dp)
-                            .padding(horizontal = 16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = cardColor
-                        ),
-                        onClick = { onAddCardClick(moduleId) }
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("Добавить карточку")
                         }
                     }
                 }

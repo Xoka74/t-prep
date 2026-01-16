@@ -21,6 +21,7 @@ data class EditModuleForm(
         editAccess = AccessLevel.AllUsers,
         isIntervalRepetitionsEnabled = false
     ),
+    val totalCards: Int? = null,
 ) : Form<ModuleFormValidationError>() {
     override fun validate(): ModuleFormValidationError? {
         if (module.name.isEmpty()) {

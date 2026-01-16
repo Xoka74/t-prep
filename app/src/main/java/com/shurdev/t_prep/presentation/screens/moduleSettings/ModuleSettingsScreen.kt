@@ -1,5 +1,6 @@
 package com.shurdev.t_prep.presentation.screens.moduleSettings
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.shurdev.t_prep.R
 import com.shurdev.t_prep.domain.forms.EditableState
+import com.shurdev.t_prep.domain.forms.FormPreparationState
+import com.shurdev.t_prep.domain.forms.FormSubmissionErrorState
 import com.shurdev.t_prep.domain.forms.FormSubmittedState
 import com.shurdev.t_prep.domain.forms.FormSubmittingState
 import com.shurdev.t_prep.domain.forms.FormValidationErrorState
-import com.shurdev.t_prep.R
-import com.shurdev.t_prep.domain.forms.FormPreparationState
 import com.shurdev.t_prep.domain.models.AccessLevel
 import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import com.shurdev.t_prep.presentation.components.buttons.SingleChoiceDialogButton
@@ -57,9 +59,10 @@ fun ModuleSettingsScreen(
 
     val isSubmitting = formState is FormSubmittingState
     val isPreparing = formState is FormPreparationState
+    val hasCards = form.totalCards != 0
 
     DefaultScreenLayout(
-        title = stringResource(R.string.editing),
+        title = stringResource(R.string.module_settings),
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         onBackInvoked = onBack
     ) {
@@ -67,18 +70,29 @@ fun ModuleSettingsScreen(
             isSubmitting || isPreparing -> Loader()
             else -> StickyBottomColumn(
                 stickyBottom = {
-                    PrimaryButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.save),
-                        onClick = viewModel::submitForm,
-                        enabled = formState is EditableState,
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        if (formState is FormSubmissionErrorState) {
+                            Text(
+                                modifier = Modifier.padding(8.dp),
+                                text = "Неизвестная ошибка",
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+
+                        PrimaryButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.save),
+                            onClick = viewModel::submitForm,
+                            enabled = formState is EditableState,
+                        )
+                    }
                 }
             ) {
                 AppTextField(
                     modifier = Modifier.fillMaxWidth(),
                     text = form.module.name,
-                    hint = stringResource(R.string.title),
+                    hint = stringResource(R.string.enter_text),
+                    label = stringResource(R.string.title),
                     onTextChange = viewModel::onModuleNameChanged,
                     error = validationError?.nameError?.toErrorString(
                         required = stringResource(R.string.required_field),
@@ -90,7 +104,8 @@ fun ModuleSettingsScreen(
                 AppTextField(
                     modifier = Modifier.fillMaxWidth(),
                     text = form.module.description,
-                    hint = stringResource(R.string.add_description),
+                    hint = stringResource(R.string.enter_text),
+                    label = stringResource(R.string.description),
                     onTextChange = viewModel::onModuleDescriptionChanged,
                     error = validationError?.descriptionError?.toErrorString(
                         required = stringResource(R.string.required_field),
@@ -129,6 +144,10 @@ fun ModuleSettingsScreen(
 
                 Spacer(Modifier.height(8.dp))
 
+                if (!hasCards) {
+                    Text("Добавьте карточки в модуль, чтобы открыть возможность для интервальных повторений")
+                }
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -144,9 +163,10 @@ fun ModuleSettingsScreen(
                         Spacer(Modifier.weight(1f))
                         Switch(
                             checked = form.module.isIntervalRepetitionsEnabled,
+                            enabled = hasCards,
                             onCheckedChange = {
                                 viewModel.onIntervalRepetitionsToggle(it)
-                            }
+                            },
                         )
                     }
                 }

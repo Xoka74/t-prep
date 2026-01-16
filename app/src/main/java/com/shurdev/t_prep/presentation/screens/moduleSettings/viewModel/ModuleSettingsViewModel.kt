@@ -52,6 +52,7 @@ class ModuleSettingsViewModel @Inject constructor(
                 EditModuleForm(
                     initialData = data,
                     module = data,
+                    totalCards = module.totalCards,
                 )
             }
 

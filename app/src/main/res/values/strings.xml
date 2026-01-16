@@ -20,6 +20,7 @@
     <string name="create">Создать</string>
     <string name="required_field">Обязательное поле</string>
     <string name="add_description">Добавьте описание…</string>
+    <string name="description">Описание</string>
     <string name="title">Название</string>
     <string name="question">Вопрос</string>
     <string name="answer">Ответ</string>
@@ -37,8 +38,9 @@
     <string name="other">Другое</string>
     <string name="other_options">Другие возможности</string>
     <string name="interval_repetitions">Интервальные повторения</string>
-    <string name="enter_text">Введите текст...</string>
+    <string name="enter_text">Введите текст…</string>
     <string name="confirm">Подтвердить</string>
     <string name="add_cards">Добавить карточки</string>
     <string name="next">Далее</string>
+    <string name="module_settings">Настройки модуля</string>
 </resources>
