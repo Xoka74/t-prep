@@ -1,11 +1,8 @@
-package com.shurdev.t_prep.presentation.screens.dialogs.editCard.viewModel
+package com.shurdev.t_prep.presentation.screens.dialogs.addCard.viewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.shurdev.t_prep.data.models.CardData
-import com.shurdev.t_prep.domain.forms.FormEditingState
-import com.shurdev.t_prep.domain.forms.FormPreparationFailedState
-import com.shurdev.t_prep.domain.forms.FormPreparationState
+import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.domain.forms.FormSubmissionErrorState
 import com.shurdev.t_prep.domain.forms.FormSubmittedState
 import com.shurdev.t_prep.domain.forms.FormSubmittingState
@@ -19,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditCardViewModel @Inject constructor(
+class AddCardViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     savedStateHandle: SavedStateHandle,
 ) : FormViewModel<EditCardValidationError, EditCardForm>(
@@ -27,47 +24,18 @@ class EditCardViewModel @Inject constructor(
 ) {
     private val moduleId = savedStateHandle["moduleId"] ?: ""
 
-    private val cardId = savedStateHandle["cardId"] ?: ""
-
-    init {
-        prepareForm()
-    }
-
-    private fun prepareForm() {
-        updateUiState { FormPreparationState }
-
-        viewModelScope.launch {
-            runSuspendCatching {
-                val card = cardRepository.getCardById(moduleId.toInt(), cardId.toInt())
-
-                if (card == null) {
-                    updateUiState { FormPreparationFailedState }
-                    return@launch
-                }
-
-                val data = CardData(card.question, card.answer)
-
-                updateFormData {
-                    EditCardForm(
-                        initialCardData = data,
-                        cardData = data,
-                    )
-                }
-
-                updateUiState { FormEditingState }
-            }.onFailure {
-                updateUiState { FormPreparationFailedState }
-            }
-        }
-    }
-
     override fun sendForm() {
         updateUiState { FormSubmittingState }
         viewModelScope.launch {
             runSuspendCatching {
-                if (formData.cardData != formData.initialCardData) {
-                    cardRepository.editCard(moduleId.toInt(), cardId.toInt(), formData.cardData)
-                }
+                cardRepository.createCard(
+                    CardDataDto(
+                        formData.cardData.question,
+                        formData.cardData.answer,
+                        moduleId.toInt(),
+                    )
+                )
+
                 updateUiState { FormSubmittedState(Unit) }
             }.onFailure {
                 updateUiState { FormSubmissionErrorState }

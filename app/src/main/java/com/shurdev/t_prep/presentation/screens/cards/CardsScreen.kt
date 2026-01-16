@@ -53,6 +53,7 @@ fun CardsScreen(
     onEditCardClick: (moduleId: String, cardId: String) -> Unit,
     onDeleteCardClick: (moduleId: String, cardId: String) -> Unit,
     onAddCardsClick: (moduleId: String) -> Unit,
+    onAddCardClick: (moduleId: String) -> Unit,
     onBack: () -> Unit,
 ) {
     val state = viewModel.uiState.value
@@ -336,6 +337,25 @@ fun CardsScreen(
                             ) {
                                 Text("Удалить")
                             }
+                        }
+                    }
+
+                    Spacer(Modifier.height(16.dp))
+
+                    Card(
+                        modifier = Modifier
+                            .height(56.dp)
+                            .padding(horizontal = 16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = cardColor
+                        ),
+                        onClick = { onAddCardClick(moduleId) }
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("Добавить карточку")
                         }
                     }
                 }

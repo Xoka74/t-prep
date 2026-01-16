@@ -12,6 +12,7 @@ import androidx.navigation.compose.dialog
 import com.shurdev.t_prep.presentation.screens.addCards.AddCardsScreen
 import com.shurdev.t_prep.presentation.screens.cards.CardsScreen
 import com.shurdev.t_prep.presentation.screens.createModule.CreateModuleScreen
+import com.shurdev.t_prep.presentation.screens.dialogs.addCard.AddCardDialog
 import com.shurdev.t_prep.presentation.screens.dialogs.deleteCard.DeleteCardDialog
 import com.shurdev.t_prep.presentation.screens.dialogs.deleteModule.DeleteModuleDialog
 import com.shurdev.t_prep.presentation.screens.dialogs.editCard.EditCardDialog
@@ -117,6 +118,9 @@ fun NavGraph(
                 },
                 onAddCardsClick = { moduleId ->
                     navController.navigate("add_cards/$moduleId")
+                },
+                onAddCardClick = {moduleId ->
+                    navController.navigate("add_card/$moduleId")
                 }
             )
         }
@@ -148,6 +152,12 @@ fun NavGraph(
 
         composable("add_cards/{moduleId}") {
             AddCardsScreen(
+                onBack = navController::navigateUp,
+            )
+        }
+
+        dialog("add_card/{moduleId}") {
+            AddCardDialog(
                 onBack = navController::navigateUp,
             )
         }

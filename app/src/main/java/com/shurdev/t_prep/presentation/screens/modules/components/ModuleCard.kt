@@ -123,20 +123,6 @@ fun ModuleCard(
                     )
                 }
             }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = null,
-                )
-
-                Spacer(Modifier.width(8.dp))
-
-                Text(
-                    text = module.editAccess.toResString(),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-            }
         }
     }
 }
@@ -190,50 +176,5 @@ private fun ProgressSection(
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-    }
-}
-
-@Composable
-private fun StartButton(
-    progress: Float,
-    onClick: () -> Unit
-) {
-    val buttonText = when {
-        progress >= 1f -> "Повторить"
-        progress > 0f -> "Продолжить"
-        else -> "Начать тест"
-    }
-
-    val icon = when {
-        progress >= 1f -> Icons.Default.CheckCircle
-        else -> Icons.Default.PlayArrow
-    }
-
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.CenterEnd
-    ) {
-        IconButton(
-            onClick = onClick,
-            modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = buttonText,
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = buttonText,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
     }
 }

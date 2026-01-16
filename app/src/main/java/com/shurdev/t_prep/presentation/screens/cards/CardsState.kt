@@ -11,7 +11,6 @@ data class CardsState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val slideDirection: SlideDirection = SlideDirection.Forward,
-    val isIntervalRepetitionsEnabled: Boolean = false,
     val isDeleted: Boolean = false,
 ) {
     val currentCard: Card?

@@ -37,7 +37,7 @@ class ModulesViewModel @Inject constructor(
         viewModelScope.launch {
             updateUiState { it.copy(isLoading = !pullToRefresh, isPullToRefresh = pullToRefresh) }
             try {
-                val modules = moduleRepository.getUserModules(search)
+                val modules = moduleRepository.getUserModules(search).sortedByDescending { it.cardsToRepeatCount }
                 updateUiState {
                     it.copy(
                         modules = modules,

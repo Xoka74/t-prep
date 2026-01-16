@@ -9,6 +9,7 @@ import com.shurdev.t_prep.data.mappers.toDomainModel
 import com.shurdev.t_prep.data.models.CardData
 import com.shurdev.t_prep.data.models.CardDataDto
 import com.shurdev.t_prep.data.models.CardDto
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardAddedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardDeletedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardEditedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleCardsAddedEvent
@@ -29,7 +30,11 @@ class CardRepositoryImpl(
     }
 
     override suspend fun createCard(data: CardDataDto): CardDto {
-        return cardsApi.createCard(data.moduleId, CardData(data.question, data.answer))
+        val card = cardsApi.createCard(data.moduleId, CardData(data.question, data.answer))
+
+        moduleEventPublisher.push(ModuleCardAddedEvent(data.moduleId.toString()))
+
+        return card
     }
 
     override suspend fun createCards(moduleId: Int, data: List<CardDataDto>): List<CardDto> {

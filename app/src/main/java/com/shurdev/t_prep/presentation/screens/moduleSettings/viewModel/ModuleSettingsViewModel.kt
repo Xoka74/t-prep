@@ -87,10 +87,6 @@ class ModuleSettingsViewModel @Inject constructor(
         updateFormData { form -> form.copy(module = form.module.copy(viewAccess = value)) }
     }
 
-    fun onEditAccessChange(value: AccessLevel) {
-        updateFormData { form -> form.copy(module = form.module.copy(editAccess = value)) }
-    }
-
     fun onIntervalRepetitionsToggle(isEnabled: Boolean) {
         viewModelScope.launch {
             intervalRepetitionsRepository.setIsIntervalRepetitionsEnabled(moduleId, isEnabled)

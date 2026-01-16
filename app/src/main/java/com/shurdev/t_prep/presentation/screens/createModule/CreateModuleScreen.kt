@@ -111,22 +111,6 @@ fun CreateModuleScreen(
                     selectedItem = form.module.viewAccess,
                 )
             }
-
-            Spacer(Modifier.height(8.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                SingleChoiceDialogButton(
-                    modifier = Modifier.padding(16.dp),
-                    title = stringResource(R.string.editing),
-                    items = AccessLevel.entries,
-                    onItemSelected = viewModel::onEditAccessChange,
-                    itemToString = { it.toResString() },
-                    selectedItem = form.module.editAccess,
-                )
-            }
         }
     }
 }

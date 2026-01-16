@@ -16,7 +16,7 @@ data class ModuleDto(
     @SerializedName("EditAccess")
     val editAccess: AccessLevel,
     val cards: List<Card>? = null,
-    @SerializedName("isIntervalRepetitionsEnabled")
+    @SerializedName("IsIntervalRepetitionsEnabled")
     val isIntervalRepetitionsEnabled: Boolean,
     @SerializedName("CardsToRepeatCount")
     val cardsToRepeatCount: Int,

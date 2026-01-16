@@ -122,22 +122,6 @@ fun ModuleSettingsScreen(
 
                 Spacer(Modifier.height(8.dp))
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    SingleChoiceDialogButton(
-                        modifier = Modifier.padding(16.dp),
-                        title = stringResource(R.string.editing),
-                        items = AccessLevel.entries,
-                        onItemSelected = viewModel::onEditAccessChange,
-                        itemToString = { it.toResString() },
-                        selectedItem = form.module.editAccess,
-                    )
-                }
-
-                Spacer(Modifier.height(8.dp))
-
                 Text(
                     text = stringResource(R.string.other_options),
                     style = MaterialTheme.typography.titleMedium,

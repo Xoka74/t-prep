@@ -19,18 +19,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.shurdev.t_prep.presentation.screens.profile.components.ProfileHeader
-import com.shurdev.t_prep.presentation.screens.profile.components.ProfileMenu
 import com.shurdev.t_prep.R
 import com.shurdev.t_prep.data.managers.AccountManager
+import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import com.shurdev.t_prep.presentation.components.layout.DefaultScreenLayout
+import com.shurdev.t_prep.presentation.screens.profile.components.ProfileHeader
+import com.shurdev.t_prep.presentation.screens.profile.components.ProfileMenu
 import com.shurdev.t_prep.presentation.screens.profile.viewModel.ProfileErrorState
 import com.shurdev.t_prep.presentation.screens.profile.viewModel.ProfileLoadedState
 import com.shurdev.t_prep.presentation.screens.profile.viewModel.ProfileLoadingState
 import com.shurdev.t_prep.presentation.screens.profile.viewModel.ProfileUiState
 import com.shurdev.t_prep.presentation.screens.profile.viewModel.ProfileViewModel
-import com.shurdev.t_prep.presentation.components.actions.SettingsAction
-import com.shurdev.t_prep.presentation.components.buttons.PrimaryButton
 import kotlinx.coroutines.launch
 
 @Composable

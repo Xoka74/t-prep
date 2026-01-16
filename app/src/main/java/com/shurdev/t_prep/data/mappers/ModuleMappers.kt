@@ -9,7 +9,6 @@ fun ModuleDto.toDomainModel() : Module {
         name = name,
         description = description,
         totalCards = totalCards,
-        completedCards = 5,
         viewAccess = viewAccess,
         editAccess = editAccess,
         cardsToRepeatCount = cardsToRepeatCount,

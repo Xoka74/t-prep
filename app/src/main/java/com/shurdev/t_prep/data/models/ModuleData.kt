@@ -10,6 +10,6 @@ data class ModuleData(
     val viewAccess: AccessLevel,
     @SerializedName("EditAccess")
     val editAccess: AccessLevel,
-    @SerializedName("isIntervalRepetitionsEnabled")
+    @SerializedName("IsIntervalRepetitionsEnabled")
     val isIntervalRepetitionsEnabled: Boolean
 )

@@ -9,12 +9,10 @@ import com.shurdev.t_prep.domain.eventPublishers.module.ModuleChangeEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleDeletedEvent
 import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
 import com.shurdev.t_prep.domain.repositories.CardRepository
-import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import com.shurdev.t_prep.domain.repositories.ModuleRepository
 import com.shurdev.t_prep.presentation.components.cards.CardFace
 import com.shurdev.t_prep.presentation.screens.cards.CardsState
 import com.shurdev.t_prep.presentation.screens.cards.SlideDirection
-import com.shurdev.t_prep.utils.runSuspendCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapNotNull
@@ -25,7 +23,6 @@ import javax.inject.Inject
 class CardsViewModel @Inject constructor(
     private val cardRepository: CardRepository,
     private val moduleRepository: ModuleRepository,
-    private val intervalRepetitionsRepository: IntervalRepetitionsRepository,
     private val moduleEventPublisher: ModuleEventPublisher,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -59,25 +56,15 @@ class CardsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                var intervalRepetitionCards =
-                    intervalRepetitionsRepository.getCardsForRepetition(moduleId)
-
-                if (intervalRepetitionCards.isEmpty()) {
-                    intervalRepetitionCards = cardRepository.getCardByModule(moduleId)
-                }
-//                val cards = cardRepository.getCardByModule(moduleId)
-
+                val cards = cardRepository.getCardByModule(moduleId)
                 val module = moduleRepository.getModuleById(moduleId)
-                val moduleName = module?.name
-                val isIntervalRepetitionsEnabled = module?.isIntervalRepetitionsEnabled ?: false
 
                 _uiState.value = _uiState.value.copy(
-                    moduleName = moduleName,
-                    cards = intervalRepetitionCards,
+                    moduleName = module?.name,
+                    cards = cards,
                     currentIndex = 0,
                     cardFace = CardFace.Front,
                     isLoading = false,
-                    isIntervalRepetitionsEnabled = isIntervalRepetitionsEnabled
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

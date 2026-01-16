@@ -57,5 +57,7 @@ class IntervalRepetitionsRepositoryImpl(
                 rightAnswer = isAnswerRight
             )
         )
+
+        moduleEventPublisher.push(ModuleIntervalRepetitionEvent(moduleId))
     }
 }

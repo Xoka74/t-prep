@@ -13,6 +13,10 @@ data class ModuleCardEditedEvent(
     val cardId: String,
 ) : ModuleChangeEvent(moduleId)
 
+data class ModuleCardAddedEvent(
+    override val moduleId: String,
+) : ModuleChangeEvent(moduleId)
+
 data class ModuleCardsAddedEvent(
     override val moduleId: String,
 ) : ModuleChangeEvent(moduleId)
