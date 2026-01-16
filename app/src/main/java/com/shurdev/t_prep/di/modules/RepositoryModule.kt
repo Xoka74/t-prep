@@ -106,7 +106,10 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideIntervalRepetitionsRepository(intervalRepetitionsApi: IntervalRepetitionsApi): IntervalRepetitionsRepository {
-        return IntervalRepetitionsRepositoryImpl(intervalRepetitionsApi)
+    fun provideIntervalRepetitionsRepository(
+        intervalRepetitionsApi: IntervalRepetitionsApi,
+        moduleEventPublisher: ModuleEventPublisher,
+    ): IntervalRepetitionsRepository {
+        return IntervalRepetitionsRepositoryImpl(intervalRepetitionsApi, moduleEventPublisher)
     }
 }

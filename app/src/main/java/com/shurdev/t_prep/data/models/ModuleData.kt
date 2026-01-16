@@ -10,8 +10,6 @@ data class ModuleData(
     val viewAccess: AccessLevel,
     @SerializedName("EditAccess")
     val editAccess: AccessLevel,
-    @SerializedName("PasswordHash")
-    val passwordHash: String,
     @SerializedName("isIntervalRepetitionsEnabled")
     val isIntervalRepetitionsEnabled: Boolean
 )

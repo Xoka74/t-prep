@@ -46,7 +46,6 @@ class ModuleSettingsViewModel @Inject constructor(
                 description = module.description,
                 viewAccess = module.viewAccess,
                 editAccess = module.editAccess,
-                passwordHash = formData.module.passwordHash,
                 isIntervalRepetitionsEnabled = module.isIntervalRepetitionsEnabled
             )
             updateFormData {

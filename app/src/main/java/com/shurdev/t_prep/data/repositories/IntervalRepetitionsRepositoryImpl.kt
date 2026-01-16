@@ -3,6 +3,8 @@ package com.shurdev.t_prep.data.repositories
 import com.shurdev.t_prep.data.api.IntervalRepetitionsApi
 import com.shurdev.t_prep.data.mappers.toDomainModel
 import com.shurdev.t_prep.data.models.UpdateCardData
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleEventPublisher
+import com.shurdev.t_prep.domain.eventPublishers.module.ModuleIntervalRepetitionEvent
 import com.shurdev.t_prep.domain.models.Card
 import com.shurdev.t_prep.domain.repositories.IntervalRepetitionsRepository
 import java.text.SimpleDateFormat
@@ -11,7 +13,8 @@ import java.util.Locale
 import java.util.TimeZone
 
 class IntervalRepetitionsRepositoryImpl(
-    private val intervalRepetitionsApi: IntervalRepetitionsApi
+    private val intervalRepetitionsApi: IntervalRepetitionsApi,
+    private val moduleEventPublisher: ModuleEventPublisher,
 ) : IntervalRepetitionsRepository {
 
     override suspend fun getCardsForRepetition(moduleId: String): List<Card> {
@@ -31,6 +34,8 @@ class IntervalRepetitionsRepositoryImpl(
         } else {
             intervalRepetitionsApi.disableIntervalRepetitions(moduleId.toInt())
         }
+
+        moduleEventPublisher.push(ModuleIntervalRepetitionEvent(moduleId))
     }
 
     override suspend fun updateCardStatus(
